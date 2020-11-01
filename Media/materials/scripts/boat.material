@@ -1,0 +1,13 @@
+material UUVSimulator/Boat
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture ../textures/boat.jpg
+      }
+    }
+  }
+}

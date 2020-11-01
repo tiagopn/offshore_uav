@@ -1,0 +1,13 @@
+material UUVSimulator/OilRig
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture ../textures/metal.jpg
+      }
+    }
+  }
+}
