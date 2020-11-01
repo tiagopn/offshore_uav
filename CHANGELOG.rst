@@ -1,5 +1,5 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package uuv_gazebo_worlds
+Changelog for package offshore_uav
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 0.6.13 (2019-08-12)
@@ -49,7 +49,7 @@ Changelog for package uuv_gazebo_worlds
 
 0.6.3 (2018-12-13)
 ------------------
-* MV World models and files to uuv_gazebo_worlds
+* MV World models and files to offshore_uav
   Signed-off-by: Musa Morena Marcusso Manhaes <Musa.Marcusso@de.bosch.com>
 * Contributors: Musa Morena Marcusso Manhães
 

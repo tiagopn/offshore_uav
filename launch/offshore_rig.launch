@@ -14,7 +14,7 @@
   <arg name="world_name" default="offshore_rig" />
 
     <!-- supply this argument to specity a world file -->
-  <arg name="world_file" default="$(find uuv_gazebo_worlds)/worlds/$(arg world_name).world" />
+  <arg name="world_file" default="$(find offshore_uav)/worlds/$(arg world_name).world" />
 
   <!-- set use_sim_time flag -->
   <group if="$(arg use_sim_time)">

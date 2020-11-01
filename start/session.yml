@@ -1,7 +1,7 @@
 name: simulation
 root: ./
 startup_window: status
-pre_window: export UAV_NAME=uav1; export UAV_TYPE=f450; export WORLD_FILE=./world.yaml; export PX4_SIM_SPEED_FACTOR=1.0
+pre_window: export UAV_NAME=uav1; export UAV_TYPE=f450; export ODOMETRY_TYPE=gps; export WORLD_FILE=./world.yaml; export PX4_SIM_SPEED_FACTOR=1.0
 windows:
   - roscore:
       layout: tiled
@@ -10,7 +10,7 @@ windows:
   - gazebo:
       layout: tiled
       panes:
-        - waitForRos; roslaunch uuv_gazebo_worlds offshore_rig.launch
+        - waitForRos; roslaunch offshore_uav offshore_rig.launch
   - status:
       layout: tiled
       panes:

@@ -6,8 +6,8 @@ use_utm_origin: false
 utm_origin_units: 1 # 0 - UTM, 1 - Latitude Longitude
 utm_origin_x: 0
 utm_origin_y: 0
-utm_origin_lat: 47.397743
-utm_origin_lon: 8.545594
+utm_origin_lat: 37.411802
+utm_origin_lon: -121.995739
 
 use_local_origin: true
 local_origin_x: 0.0
@@ -15,7 +15,7 @@ local_origin_y: 0.0
 
 safety_area:
 
-  use_safety_area: false
+  use_safety_area: true
 
   frame_name: "local_origin"
 
@@ -41,10 +41,10 @@ safety_area:
     cols: [4, 4] # nums of cols of each matrix
 
   # convex polygon CCW
-  safety_area: [-10, -10,
-  10, -10,
-  10, 10,
-  -10, 10]
+  safety_area: [-200, -200,
+  200, -200,
+  200, 200,
+  -200, 200]
 
-  max_height: 10.0
+  max_height: 50.0
   min_height: 0.0
