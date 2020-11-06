@@ -1,0 +1,5 @@
+<library path="lib/libOffshoreUAV">
+  <class name="offshore_uav/OffshoreUAV" type="offshore_uav::OffshoreUAV" base_class_type="nodelet::Nodelet">
+    <description>OffshoreUAV nodelet</description>
+  </class>
+</library>

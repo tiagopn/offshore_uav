@@ -32,7 +32,7 @@ varying vec2 bumpCoord;
 // GPU Gems, chapter 01: "Effective Water Simulation from Physical Models"
 // http://http.developer.nvidia.com/GPUGems/gpugems_ch01.html
 
-// Information regarding a single wave
+// Inoffshore_uav regarding a single wave
 struct WaveParameters {
     float w;   // frequency
     float a;   // amplitude

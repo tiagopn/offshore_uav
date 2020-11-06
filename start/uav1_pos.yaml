@@ -3,4 +3,4 @@ uav_name:
   x: 40.0
   y: 100.0
   z: 19.0
-  heading: 3.14
+  heading: -1.62 #heading: 3.14

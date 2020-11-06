@@ -18,7 +18,8 @@ windows:
   - spawn:
       layout: tiled
       panes:
-        - waitForSimulation; spawn_uav 1 --$UAV_TYPE --run --delete --enable-rangefinder --file uav1_pos.yaml
+        #--enable-rangefinder
+        - waitForSimulation; spawn_uav 1 --$UAV_TYPE --run --delete --enable-rangefinder --enable-ground-truth --enable-bluefox-camera --file uav1_pos.yaml
   - control:
       layout: tiled
       panes:
@@ -32,6 +33,11 @@ windows:
           rosservice call /$UAV_NAME/mavros/cmd/arming 1;
           sleep 2;
           rosservice call /$UAV_NAME/mavros/set_mode 0 offboard'
+  - rviz:
+      layout: tiled
+      panes:
+        - waitForControl; #roslaunch mrs_uav_testing rviz.launch
+        - waitForControl; #roslaunch mrs_rviz_plugins load_robot.launch
   - goto:
       layout: tiled
       panes:
