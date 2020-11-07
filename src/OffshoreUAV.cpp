@@ -11,7 +11,6 @@ namespace offshore_uav
     /* set flags to false */
     is_initialized_ = false;
     hover_mode_ = false;
-    swarming_mode_ = false;
     state_machine_running_ = false;
 
     ros::NodeHandle nh("~");
@@ -22,6 +21,23 @@ namespace offshore_uav
 
     /* load parameters */
     param_loader.loadParam("uav_name", _uav_name_);
+    //param_loader.loadParam("frame", _frame_);
+    param_loader.loadParam("top_of_the_hill/position/x", _top_of_the_hill_.x);
+    param_loader.loadParam("top_of_the_hill/position/y", _top_of_the_hill_.y);
+    param_loader.loadParam("top_of_the_hill/position/z", _top_of_the_hill_.z);
+    param_loader.loadParam("top_of_the_hill/position/heading", _top_of_the_hill_.heading);
+
+    param_loader.loadParam("first_boat/position/x", _first_boat_.x);
+    param_loader.loadParam("first_boat/position/y", _first_boat_.y);
+    param_loader.loadParam("first_boat/position/z", _first_boat_.z);
+    param_loader.loadParam("first_boat/position/heading", _first_boat_.heading);
+
+
+    param_loader.loadParam("offshore_landing/position/x", _offshore_landing_.x);
+    param_loader.loadParam("offshore_landing/position/y", _offshore_landing_.y);
+    param_loader.loadParam("offshore_landing/position/z", _offshore_landing_.z);
+
+
     //param_loader.loadParam("frame", _frame_);
     //param_loader.loadParam("desired_height", _desired_height_);
     //param_loader.loadParam("land_at_the_end", _land_end_);
@@ -85,7 +101,9 @@ namespace offshore_uav
     //srv_server_close_node_    = nh.advertiseService("close_node", &OffshoreUAV::callbackCloseNode, this);
     //
     
-    //
+    // | -------------- initialize state subscriber ----------------- |
+    uavStateSubscriber =
+      nh.subscribe("uav_state_in", 1000, &OffshoreUAV::stateInCallback, this);
 
     // | -------------- initialize serviceClients ----------------- |
     ///* service client */
@@ -126,6 +144,22 @@ namespace offshore_uav
     else
     {
       ROS_ERROR("[Offshore] Failed to call service \"srv_client_goto_relative_\"");
+    }
+  }
+
+  void OffshoreUAV::stateInCallback(const nav_msgs::Odometry::ConstPtr& msg) {
+  // ROS_INFO("%s", msg->header);
+
+  // ROS_INFO("##################################################");
+  // ROS_INFO("%f", msg->pose.pose.position.x);
+  // ROS_INFO("%f", msg->pose.pose.position.y);
+  // ROS_INFO("%f", msg->pose.pose.position.z);
+
+    {
+      std::scoped_lock lock(mutex_odometry_);
+      OffshoreUAV::position_x_ = msg->pose.pose.position.x;
+      OffshoreUAV::position_x_ = msg->pose.pose.position.y;
+      OffshoreUAV::position_z_ = msg->pose.pose.position.z;
     }
   }
 
@@ -194,6 +228,31 @@ namespace offshore_uav
     ros::Duration(time).sleep();
   }
 
+  void OffshoreUAV::waitArrivalAt(double x, double y, double z) {
+  // Await for a minimal of 10 seconds
+
+  // ROS_INFO("[FASE1]: Waiting for arrival at [%d,%d,%d]...", x, y, z);
+  for (int count = 0; count < 40; count++) {
+    // Threshold
+    const float threshold = 0.25;
+
+    bool x_test =
+        (x - threshold) < position_x_ and position_x_ < (x + threshold);
+
+    bool y_test =
+        (y - threshold) < position_y_ and position_y_ < (y + threshold);
+
+    bool z_test =
+        (z - threshold) < position_z_ and position_z_ < (z + threshold);
+
+    if (x_test and y_test and z_test and (count > 10)) break;
+
+    // sleep(1);
+    ros::Duration(1).sleep();
+  }
+  ROS_INFO("[FASE1]: Arrived at the desired destination.");
+}
+
   // | --------------------------- timer callbacks ----------------------------- |
 
   /* callbackTimerStateMachine() //{ */
@@ -210,57 +269,31 @@ namespace offshore_uav
 
     ROS_INFO("Started the loop after if");
     ros::Time now = ros::Time::now();
-
     wait(5, FRED("ESTIMATOR NOW IS DIFFERENT"));
-    //TODO:
-    //rosservice call /uav1/odometry/change_alt_estimator_type_string "value: baro"
-    //echo "wait 5 sec"
-    //sleep 5
     mrs_msgs::String change_alt_estimator;
     change_alt_estimator.request.value = "baro";
     changeEstimator(change_alt_estimator);
-
     wait(5, FRED("CHANGED ESTIMATOR"));
 
     ROS_INFO("Increasing altitude for the sand montain");
     mrs_msgs::Vec4 srv;
+    
     srv.request.goal = {0, 0, 5, 0};
     gotoRelative(srv);
     wait();
-
-    for (int i = 1; i <= 3; i++)
-    {
-      //echo ""
-      //echo "counter: $i / 3 => -1m"
-      ROS_INFO("LOOP of sand montain");
-      //rosservice call /uav1/control_manager/goto_relative "goal: [0.0, -10.0, 0.0, 0.0]"
-
-      srv.request.goal = {0, -10, 0, 0};
-      gotoRelative(srv);
-      wait();
-    }
-
-    ROS_INFO("First boat");
-
-    srv.request.goal = {-123136.570269, 1108437.85305, 0.630100856701, -1.62};
+                    
+    srv.request.goal = {_top_of_the_hill_.x, _top_of_the_hill_.y, _top_of_the_hill_.z, _top_of_the_hill_.heading};
     gotoGlobal(srv);
-    wait(15, FBLU("I am going to the boat, look at me please"));
+    waitArrivalAt(_top_of_the_hill_.x, _top_of_the_hill_.y, _top_of_the_hill_.z);
+    //wait(30, FBLU("I am going to the sand montain, look at me please"));
     
+    ROS_INFO("First boat");
+    
+    srv.request.goal = { _first_boat_.x, _first_boat_.y, _first_boat_.z, _first_boat_.heading};
+    gotoGlobal(srv);
+    waitArrivalAt(_first_boat_.x, _first_boat_.y, _first_boat_.z);
+    wait(5, FBLU("I am going to the boat, look at me please"));
     wait(15, FBLU("I am at the boat, look at me please"));
-    
-    /*
-    ##rosservice call /uav1/odometry/change_alt_estimator_type_string "value: HEIGHT"
-    ##echo "wait 5 sec"
-    ##sleep 5
-    ##
-    ##echo "preparando para pousar"
-    ##
-    ##for i in 1 2; do
-    ##    rosservice call /uav1/control_manager/goto_relative "goal: [0.0, 0.0, -4.0, 0.0]"
-    ##    echo "wait 5 sec"
-    ##    sleep 5
-    ##done 
-    */
     
     //mrs_msgs::String change_alt_estimator;
     change_alt_estimator.request.value = "HEIGHT";
@@ -272,14 +305,14 @@ namespace offshore_uav
     for(auto i = 1; i <= 10; i++){
       srv.request.goal = {0, 0, -2, 0};
       gotoRelative(srv);
-      wait(3);
+      wait();
     }
 
     ROS_INFO("Decreasing altitude in a small step for the land in the boat");
     for(auto i = 1; i <= 8; i++){      
       srv.request.goal = {0, 0, -0.2, 0};
       gotoRelative(srv);
-      wait(1);
+      wait();
     }
 
     wait(15, FGRN("LANDED"));
@@ -291,25 +324,9 @@ namespace offshore_uav
     changeEstimator(change_alt_estimator);
 
     wait(5, FRED("CHANGED ESTIMATOR"));
-
-
-/*
-##for i in 1 2 3 4 5 6 7 8; do
-##    rosservice call /uav1/control_manager/goto_relative "goal: [0.0, 0.0, -0.2, 0.0]"
-##    echo "wait 5 sec"
-##    sleep 1
-##done
-//##rosservice call /uav1/control_manager/goto_relative "goal: [0.0, 0.0, 13.0, 0.0]"
-
-rosservice call /uav1/odometry/change_alt_estimator_type_string "value: baro"
-
-second_boat_position:
-rosservice call /uav1/control_manager/goto "goal: [-123129.739198, 1108420.15897, 0.630100856701, -1.62]"
-*/
-
-    ROS_INFO("Helipoint");
     //offshore_landing_position:
-    srv.request.goal = {-123144.056766, 1108424.88005, 6.12495578052, 1.62};
+    ROS_INFO("Helipoint");
+    srv.request.goal = {_offshore_landing_.x, _offshore_landing_.y, _offshore_landing_.z, _offshore_landing_.heading};
     gotoGlobal(srv);
     wait(20);
 
@@ -340,8 +357,53 @@ rosservice call /uav1/control_manager/goto "goal: [-123129.739198, 1108420.15897
 
     ROS_INFO("Going back to land in helipoint");
     //offshore_landing_position:
+    ROS_INFO("Helipoint");
+    srv.request.goal = {_offshore_landing_.x, _offshore_landing_.y, _offshore_landing_.z, _offshore_landing_.heading};
+    gotoGlobal(srv);
+    wait(20);
 
-    srv.request.goal = {-123144.056766, 1108424.88005, 6.12495578052, 1.62};
+    ROS_INFO("Around the offshore base towers");
+    //Apartir do ponto pouso da offshore_landing_position, o drone vai:
+    //rosservice call /uav1/control_manager/goto_relative "goal: [-40.0, 0.0, 0.0, 0.0]"
+
+    srv.request.goal = {-30, 0, 0, 0};
+    gotoRelative(srv);
+    wait(20);
+    
+    srv.request.goal = {0, -15, 0, 0};
+    gotoRelative(srv);
+    wait(20);
+    //rosservice call /uav1/control_manager/goto_relative "goal: [40.0, 0.0, 0.0, 0.0]"
+
+    srv.request.goal = {0, 0, 20, 0};
+    gotoRelative(srv);
+    wait(20);
+    //rosservice call /uav1/control_manager/goto_relative "goal: [0.0, 40.0, 0.0, 0.0]"
+
+    srv.request.goal = {0, -10, 0, 0};
+    gotoRelative(srv);
+    wait(20);
+
+    srv.request.goal = {15, 0, 0, 0};
+    gotoRelative(srv);
+    wait(20);
+
+    srv.request.goal = {0, 0, 0, 3.14159};
+    gotoRelative(srv);
+    wait(20);
+
+    srv.request.goal = {0, 10, 0, 0};
+    gotoRelative(srv);
+    wait(20);
+
+    srv.request.goal = {0, 0, -20, 0};
+    gotoRelative(srv);
+    wait(20);
+
+    ROS_INFO("Going back to land in helipoint");
+    //offshore_landing_position:
+
+    srv.request.goal = {_offshore_landing_.x, _offshore_landing_.y, _offshore_landing_.z, _offshore_landing_.heading};
     gotoGlobal(srv);
     wait();
 

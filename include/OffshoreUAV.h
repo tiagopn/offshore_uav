@@ -19,14 +19,17 @@
 
 #include <std_srvs/Trigger.h>
 
-#include <message_filters/subscriber.h>
-#include <message_filters/synchronizer.h>
-#include <message_filters/sync_policies/approximate_time.h>
+//#include <message_filters/subscriber.h>
+//#include <message_filters/synchronizer.h>
+//#include <message_filters/sync_policies/approximate_time.h>
+
+#include <mutex>
+
 
 /* custom library */
 #include <colors.h>
 
-using namespace message_filters;
+//using namespace message_filters;
 
 namespace offshore_uav
 {
@@ -39,43 +42,23 @@ private:
   /* flags */
   bool is_initialized_;
   bool hover_mode_;
-  bool swarming_mode_;
+
+  std::mutex mutex_odometry_;
+
 
   /* ros parameters */
   std::string _uav_name_;
+  struct POI {
+    double x = 0.0;
+    double y = 0.0;
+    double z = 0.0;
+    double heading = 0.0; 
+  };
 
-  /* publishers */
-  ros::Publisher pub_mode_changed_;
-  ros::Publisher pub_virtual_heading_;
-
-  // | ---------------------- proximal control parameters ---------------------- |
-
-  double _desired_distance_;
-  double _range_multipler_;
-  double _steepness_potential_;
-  double _strength_potential_;
-  
-  double max_range_;
-  double noise_;
-  
-  // | ----------------------- motion control parameters ----------------------- |
-
-  double _K1_;  // Linear gain
-  double _K2_;  // Angular gain
-  double _move_forward_;
-  double _interpolate_coeff_;
-  bool  _fixed_heading_;
-
-  double virtual_heading_;
-  double smooth_heading_;
-  double initial_heading_;
-  
-  // | --------------------------- timer callbacks ----------------------------- |
-
-  /* after start the swarming mode, the node will run for ($_timeout_flocking_) seconds */
-  void       callbackTimerAbortFlocking(const ros::TimerEvent& event);
-  ros::Timer timer_flocking_end_;
-  double     _timeout_flocking_;
+  //std::vector<POI> placesToVisit;
+  POI _top_of_the_hill_;
+  POI _first_boat_;
+  POI _offshore_landing_;
 
   void       callbackTimerStateMachine(const ros::TimerEvent& event);
   ros::Timer timer_state_machine_;
@@ -89,12 +72,21 @@ private:
   ros::ServiceClient srv_client_land_;
   ros::ServiceClient srv_client_change_alt_estimator_;
   
-  
-
   ros::ServiceClient srv_client_goto_relative_;
   ros::ServiceClient srv_client_goto_global_;
 
   bool               _land_end_;
+
+  float position_x_ = 0.0;
+  float position_y_ = 0.0;
+  float position_z_ = 0.0;
+
+  // | ------------------------ subscribers              ----------------------- |
+  ros::Subscriber uavStateSubscriber;
+
+
+  // | ------------------------ msg            callbacks ----------------------- |
+  void stateInCallback(const nav_msgs::OdometryConstPtr& msg);
 
   // | ------------------------ service server callbacks ----------------------- |
 
@@ -111,6 +103,7 @@ private:
   void goto_to_fix(mrs_msgs::Vec4 srv);
 
   void wait(int time = 5, std::string msg = "Waiting...");
+  void waitArrivalAt(double x, double y, double z);
 
   
 };

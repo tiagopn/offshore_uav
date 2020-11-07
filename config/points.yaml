@@ -1,27 +1,53 @@
-second_boat_position:
+top_of_the_hill:
+  frame_id: "uav1/gps_origin"
+  position: 
+    x: -123120.737383
+    y: 1108505.75129
+    z: 6.68422972151
+    heading: -1.62
+    
+first_boat:
   Hori: GPS
   Vert: BARO
   goto: global
-  x: -123136.570269
-  y: 1108437.85305
-  z: 0.630100856701
-  heading: -1.62
+  frame_id: "uav1/gps_origin"
+  position:
+    x: -123136.570269
+    y: 1108437.85305
+    z: 0.630100856701
+    heading: -1.62
+
+offshore_landing:
+  Hori: GPS
+  Vert: BARO
+  goto: global
+  frame_id: "uav1/gps_origin"
+  position:
+    x: -123144.056766
+    y: 1108424.88005
+    z: 6.12495578052
 
 second_boat_position:
   Hori: GPS
   Vert: BARO
   goto: global
-  x: -123129.739198
-  y: 1108420.15897
-  z: 0.630100856701
+  frame_id: "uav1/gps_origin"
+  position:
+    x: -123129.739198
+    y: 1108420.15897
+    z: 0.630100856701
+    heading: -1.62
  
 offshore_landing_position:
   Hori: GPS
   Vert: BARO
   goto: global
-  x: -123144.056766
-  y: 1108424.88005
-  z: 6.12495578052
+  frame_id: "uav1/gps_origin"
+  position:
+    x: -123144.056766
+    y: 1108424.88005
+    z: 6.12495578052
+
 
 offshore_path:
   goto: relative
@@ -39,3 +65,5 @@ start:
   frames:
     Hori: GPS
     Vert: HEIGHT
+  
+

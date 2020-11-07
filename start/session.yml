@@ -1,6 +1,6 @@
 name: simulation
 root: ./
-startup_window: status
+startup_window: flight
 pre_window: export UAV_NAME=uav1; export UAV_TYPE=f450; export ODOMETRY_TYPE=gps; export WORLD_FILE=./world.yaml; export PX4_SIM_SPEED_FACTOR=1.0
 windows:
   - roscore:
@@ -11,6 +11,10 @@ windows:
       layout: tiled
       panes:
         - waitForRos; roslaunch offshore_uav offshore_rig.launch
+  - flight:
+      layout: tiled
+      panes:
+        - waitForRos; 'history -s roslaunch offshore_uav offshore_uav.launch'
   - status:
       layout: tiled
       panes:
@@ -19,7 +23,7 @@ windows:
       layout: tiled
       panes:
         #--enable-rangefinder
-        - waitForSimulation; spawn_uav 1 --$UAV_TYPE --run --delete --enable-rangefinder --enable-ground-truth --enable-bluefox-camera --file uav1_pos.yaml
+        - waitForSimulation; spawn_uav 1 --$UAV_TYPE --run --delete --enable-rangefinder --enable-ground-truth --enable-bluefox-camera --enable-mobius-camera-front --file uav1_pos.yaml
   - control:
       layout: tiled
       panes:
