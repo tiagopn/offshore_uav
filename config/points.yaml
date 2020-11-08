@@ -25,7 +25,8 @@ offshore_landing:
   position:
     x: -123144.056766
     y: 1108424.88005
-    z: 6.12495578052
+    z: 15.0
+    heading: -1.62
 
 second_boat_position:
   Hori: GPS
@@ -38,7 +39,7 @@ second_boat_position:
     z: 0.630100856701
     heading: -1.62
  
-offshore_landing_position:
+offshore_landing_position_without_landing:
   Hori: GPS
   Vert: BARO
   goto: global
@@ -48,14 +49,20 @@ offshore_landing_position:
     y: 1108424.88005
     z: 6.12495578052
 
-
-offshore_path:
-  goto: relative
-  one:  [-40.0, 0.0, 0.0, 0.0]
-  two:  [0.0, -40.0, 0.0, 0.0]
-  three:  [40.0, 0.0, 0.0, 0.0]
-  four:  [0.0, 40.0, 0.0, 0.0]
-
+waypoints:  [-40,   0, 0, 0, 
+               0, -35, 0, 0,
+              40,   0, 0, 0,
+               0,   35, 0, 0,
+             -30, 0, 0, 0,
+               0, -15, 0, 0,
+               0, 0, 20, 0,
+               0, -10, 0, 0,
+              15, 0, 0, 0,
+               0, 0, 0, 3.14159,
+               0, 10, 0, 0,
+               0, 0, -20, 0,]
+      
+      
 
 start:
   position: 

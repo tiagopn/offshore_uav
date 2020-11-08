@@ -1,0 +1,10 @@
+# Boolean 
+loop_offshore: true
+
+# minimal time to wait on waitAwaitArrivalAt
+wait_arrival: 10
+
+# time to wait on wait
+wait_timer: 10
+
+land_at_the_end: true

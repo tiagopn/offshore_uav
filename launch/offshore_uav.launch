@@ -32,6 +32,7 @@
 
       <!-- ROS parameters config file -->
       <rosparam file="$(find offshore_uav)/config/points.yaml" />
+       <rosparam file="$(find offshore_uav)/config/default.yaml" />
 
       <!-- Load a user param file -->
       <rosparam if="$(eval not arg('config_flocking') == '')" file="$(arg config_flocking)" />

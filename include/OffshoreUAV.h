@@ -19,17 +19,15 @@
 
 #include <std_srvs/Trigger.h>
 
-//#include <message_filters/subscriber.h>
-//#include <message_filters/synchronizer.h>
-//#include <message_filters/sync_policies/approximate_time.h>
-
 #include <mutex>
 
+/* mavros messages*/
+#include <mavros_msgs/CommandBool.h>
+#include <mavros_msgs/SetMode.h>
 
 /* custom library */
 #include <colors.h>
 
-//using namespace message_filters;
 
 namespace offshore_uav
 {
@@ -42,12 +40,18 @@ private:
   /* flags */
   bool is_initialized_;
   bool hover_mode_;
+  bool firstTakeoff;
+  bool _land_end_;
 
   std::mutex mutex_odometry_;
 
 
   /* ros parameters */
   std::string _uav_name_;
+  bool _loop_offshore_;
+  int _wait_arrival_;
+  int _wait_timer_;
+
   struct POI {
     double x = 0.0;
     double y = 0.0;
@@ -55,10 +59,17 @@ private:
     double heading = 0.0; 
   };
 
-  //std::vector<POI> placesToVisit;
   POI _top_of_the_hill_;
   POI _first_boat_;
   POI _offshore_landing_;
+
+  std::vector<mrs_msgs::Reference> matrixToPoints(const Eigen::MatrixXd& matrix);   
+  std::vector<mrs_msgs::Reference> waypoints_;
+  int n_waypoints_         ;
+  bool waypoints_loaded_   ;
+  int idx_current_waypoint_;
+  int c_loop_              ;
+
 
   void       callbackTimerStateMachine(const ros::TimerEvent& event);
   ros::Timer timer_state_machine_;
@@ -69,13 +80,17 @@ private:
   // | ------------------------ service clients callbacks ---------------------- |
 
   ros::ServiceClient srv_client_goto_;
-  ros::ServiceClient srv_client_land_;
-  ros::ServiceClient srv_client_change_alt_estimator_;
-  
   ros::ServiceClient srv_client_goto_relative_;
   ros::ServiceClient srv_client_goto_global_;
+  
+  ros::ServiceClient srv_client_change_alt_estimator_;
+  
+  ros::ServiceClient srv_client_land_;
 
-  bool               _land_end_;
+  ros::ServiceClient srv_client_arming_;
+  ros::ServiceClient srv_client_setMode_;
+  ros::ServiceClient srv_client_takeoff_;
+
 
   float position_x_ = 0.0;
   float position_y_ = 0.0;
@@ -98,14 +113,16 @@ private:
 
   void gotoRelative(mrs_msgs::Vec4 srv);
   void gotoGlobal(mrs_msgs::Vec4 srv);
+  void land();
+  void takeoff();
+  void gotoReferenceStamped(mrs_msgs::Vec4 srv);
+
   void changeEstimator(mrs_msgs::String message);
   
-  void goto_to_fix(mrs_msgs::Vec4 srv);
 
   void wait(int time = 5, std::string msg = "Waiting...");
   void waitArrivalAt(double x, double y, double z);
 
-  
 };
 
 }  // namespace offshore_uav
