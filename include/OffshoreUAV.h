@@ -49,6 +49,7 @@ private:
   /* ros parameters */
   std::string _uav_name_;
   bool _loop_offshore_;
+  bool _visit_boat_;
   int _wait_arrival_;
   int _wait_timer_;
 

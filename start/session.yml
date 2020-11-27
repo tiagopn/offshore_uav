@@ -1,4 +1,4 @@
-name: simulation
+name: simulation_offshore_uav
 root: ./
 startup_window: flight
 pre_window: export UAV_NAME=uav1; export UAV_TYPE=f450; export ODOMETRY_TYPE=gps; export WORLD_FILE=./world.yaml; export PX4_SIM_SPEED_FACTOR=1.0
@@ -14,7 +14,7 @@ windows:
   - flight:
       layout: tiled
       panes:
-        - waitForRos; 'history -s roslaunch offshore_uav offshore_uav.launch'
+        - waitForRos; history -s roslaunch offshore_uav offshore_uav.launch
   - status:
       layout: tiled
       panes:
@@ -40,8 +40,8 @@ windows:
   - rviz:
       layout: tiled
       panes:
-        - waitForControl; #roslaunch mrs_uav_testing rviz.launch
-        - waitForControl; #roslaunch mrs_rviz_plugins load_robot.launch
+        - waitForControl; history -s roslaunch mrs_uav_testing rviz.launch
+        - waitForControl; history -s roslaunch mrs_rviz_plugins load_robot.launch
   - goto:
       layout: tiled
       panes:

@@ -40,11 +40,13 @@ namespace offshore_uav
     param_loader.loadParam("offshore_landing/position/y", _offshore_landing_.y);
     param_loader.loadParam("offshore_landing/position/z", _offshore_landing_.z);
 
-    param_loader.loadParam("loop_offshore", _loop_offshore_);
     param_loader.loadParam("wait_arrival", _wait_arrival_);
     param_loader.loadParam("wait_timer", _wait_timer_);
 
+    param_loader.loadParam("loop_offshore", _loop_offshore_);
     param_loader.loadParam("land_at_the_end", _land_end_);
+    param_loader.loadParam("visit_the_boat", _visit_boat_);
+
 
     /* load waypoints as a half-dynamic matrix from config file */
     Eigen::MatrixXd waypoint_matrix;
@@ -56,15 +58,15 @@ namespace offshore_uav
     c_loop_ = 0;
     ROS_INFO_STREAM_ONCE("[Offshore]: " << n_waypoints_ << " waypoints loaded");
 
-    ROS_INFO_STREAM("[Route 1]")
+    ROS_INFO_STREAM("[Offshore - Route 1]");
     for (int i = 0; i < 4; i++)
     {
-      ROS_INFO_STREAM("[Route 1]: " << waypoints_[i].position.x << " " << waypoints_[i].position.y << " " << waypoints_[i].position.z << " " << waypoints_[i].heading << " point relative requested");
+      ROS_INFO_STREAM("[Offshore - Route 1]: " << waypoints_[i].position.x << " " << waypoints_[i].position.y << " " << waypoints_[i].position.z << " " << waypoints_[i].heading << " point relative requested");
     }
-    ROS_INFO_STREAM("[Route 2]")
+    ROS_INFO_STREAM("[Offshore - Route 2]");
     for (int i = 4; i < n_waypoints_; i++)
     {
-      ROS_INFO_STREAM("[Route 2]: " << waypoints_[i].position.x << " " << waypoints_[i].position.y << " " << waypoints_[i].position.z << " " << waypoints_[i].heading << " point relative requested");
+      ROS_INFO_STREAM("[Offshore - Route 2]: " << waypoints_[i].position.x << " " << waypoints_[i].position.y << " " << waypoints_[i].position.z << " " << waypoints_[i].heading << " point relative requested");
     }
 
     //param_loader.loadParam("landing")
@@ -362,42 +364,46 @@ namespace offshore_uav
     waitArrivalAt(_top_of_the_hill_.x, _top_of_the_hill_.y, _top_of_the_hill_.z);
     //wait(30, FBLU("I am going to the sand montain, look at me please"));
 
-    ROS_INFO("First boat");
-
-    srv.request.goal = {_first_boat_.x, _first_boat_.y, _first_boat_.z, _first_boat_.heading};
-    gotoGlobal(srv);
-    waitArrivalAt(_first_boat_.x, _first_boat_.y, _first_boat_.z);
-    wait(5, FBLU("I am going to the boat, look at me please"));
-    wait(15, FBLU("I am at the boat, look at me please"));
-
-    //mrs_msgs::String change_alt_estimator;
-    change_alt_estimator.request.value = "HEIGHT";
-    changeEstimator(change_alt_estimator);
-
-    wait(5, FYEL("CHANGED ESTIMATOR"));
-
-    ROS_INFO("Decreasing altitude for the land in the boat");
-    for (auto i = 1; i <= 10; i++)
+    if (_visit_boat_)
     {
-      srv.request.goal = {0, 0, -2, 0};
+
+      ROS_INFO("First boat");
+
+      srv.request.goal = {_first_boat_.x, _first_boat_.y, _first_boat_.z, _first_boat_.heading};
+      gotoGlobal(srv);
+      waitArrivalAt(_first_boat_.x, _first_boat_.y, _first_boat_.z);
+      wait(5, FBLU("I am going to the boat, look at me please"));
+      wait(15, FBLU("I am at the boat, look at me please"));
+
+      //mrs_msgs::String change_alt_estimator;
+      change_alt_estimator.request.value = "HEIGHT";
+      changeEstimator(change_alt_estimator);
+
+      wait(5, FYEL("CHANGED ESTIMATOR"));
+
+      ROS_INFO("Decreasing altitude for the land in the boat");
+      for (auto i = 1; i <= 10; i++)
+      {
+        srv.request.goal = {0, 0, -2, 0};
+        gotoRelative(srv);
+        wait();
+      }
+
+      ROS_INFO(FGRN("LANDED"));
+      land();
+      wait(10);
+      takeoff();
+      wait(30);
+
+      srv.request.goal = {0, 0, 13, 0};
       gotoRelative(srv);
-      wait();
+      wait(15, "Going up to change the altitude estimator");
+
+      change_alt_estimator.request.value = "BARO";
+      changeEstimator(change_alt_estimator);
+
+      wait(5, FRED("CHANGED ESTIMATOR"));
     }
-
-    ROS_INFO(FGRN("LANDED"));
-    land();
-    wait(10);
-    takeoff();
-    wait(30);
-
-    srv.request.goal = {0, 0, 13, 0};
-    gotoRelative(srv);
-    wait(15, "Going up to change the altitude estimator");
-
-    change_alt_estimator.request.value = "BARO";
-    changeEstimator(change_alt_estimator);
-
-    wait(5, FRED("CHANGED ESTIMATOR"));
     //offshore_landing_position:
     ROS_INFO("Helipoint");
     srv.request.goal = {_offshore_landing_.x, _offshore_landing_.y, _offshore_landing_.z, _offshore_landing_.heading};
@@ -411,30 +417,11 @@ namespace offshore_uav
 
       for (int i = 0; i < 4; i++)
       {
-        //ROS_INFO_STREAM("[Offshore]: " << waypoints_[i].position.x << " " << waypoints_[i].position.y << " " << waypoints_[i].position.z << " " <<  waypoints_[i].heading  << " values requested");
-        //ROS_INFO("as");
+        ROS_INFO_STREAM("[Offshore - Route 1]: " << waypoints_[i].position.x << " " << waypoints_[i].position.y << " " << waypoints_[i].position.z << " " << waypoints_[i].heading << " point relative requested");
         srv.request.goal = {waypoints_[i].position.x, waypoints_[i].position.y, waypoints_[i].position.z, waypoints_[i].heading};
         gotoRelative(srv);
         wait(_wait_timer_);
       }
-
-      /*
-      srv.request.goal = {-40, 0, 0, 0};
-      gotoRelative(srv);
-      wait(_wait_timer_);
-      
-      srv.request.goal = {0, -35, 0, 0};
-      gotoRelative(srv);
-      wait(_wait_timer_);
-
-      srv.request.goal = {40, 0, 0, 0};
-      gotoRelative(srv);
-      wait(_wait_timer_);
-      
-      srv.request.goal = {0, 35, 0, 0};
-      gotoRelative(srv);
-      wait(_wait_timer_);
-      */
 
       ROS_INFO("Going back to land in helipoint");
 
@@ -447,48 +434,11 @@ namespace offshore_uav
 
       for (int i = 4; i < n_waypoints_; i++)
       {
-        //ROS_INFO_STREAM("[Offshore]: " << waypoints_[i].position.x << " " << waypoints_[i].position.y << " " << waypoints_[i].position.z << " " <<  waypoints_[i].heading  << " values requested");
-        //ROS_INFO("as");
+        ROS_INFO_STREAM("[Offshore - Route 2]: " << waypoints_[i].position.x << " " << waypoints_[i].position.y << " " << waypoints_[i].position.z << " " << waypoints_[i].heading << " point relative requested");
         srv.request.goal = {waypoints_[i].position.x, waypoints_[i].position.y, waypoints_[i].position.z, waypoints_[i].heading};
         gotoRelative(srv);
         wait(_wait_timer_);
       }
-
-      /*
-      srv.request.goal = {-30, 0, 0, 0};
-      gotoRelative(srv);
-      wait(_wait_timer_);
-
-      srv.request.goal = {0, -15, 0, 0};
-      gotoRelative(srv);
-      wait(_wait_timer_);
-  
-
-      srv.request.goal = {0, 0, 20, 0};
-      gotoRelative(srv);
-      wait(_wait_timer_);
-     
-
-      srv.request.goal = {0, -10, 0, 0};
-      gotoRelative(srv);
-      wait(_wait_timer_);
-
-      srv.request.goal = {15, 0, 0, 0};
-      gotoRelative(srv);
-      wait(_wait_timer_);
-
-      srv.request.goal = {0, 0, 0, 3.14159};
-      gotoRelative(srv);
-      wait(_wait_timer_);
-
-      srv.request.goal = {0, 10, 0, 0};
-      gotoRelative(srv);
-      wait(_wait_timer_);
-
-      srv.request.goal = {0, 0, -20, 0};
-      gotoRelative(srv);
-      wait(_wait_timer_);
-      */
 
       ROS_INFO("Going back to land in helipoint");
       //offshore_landing_position:
