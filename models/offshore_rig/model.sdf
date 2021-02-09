@@ -102,7 +102,23 @@
                 <mesh><uri>model://offshore_rig/meshes/Boat.dae</uri><scale>1 1 1</scale></mesh>
             </geometry>
         </collision>
+
         
+        <visual name="pier">
+            <cast_shadows>false</cast_shadows>
+            <pose>70 60 -8 0 0 -1.5708</pose>
+            <geometry>
+                <mesh><uri>model://offshore_rig/meshes/pier.dae</uri><scale>1 1 1</scale></mesh>
+            </geometry>
+        </visual>
+
+        <collision name="pier">
+            <pose>70 60 -8 0 0 -1.5708</pose>
+            <geometry>
+                <mesh><uri>model://offshore_rig/meshes/pier.dae</uri><scale>1 1 1</scale></mesh>
+            </geometry>
+        </collision>
+
         <visual name="surface">
             <pose>-100 -100 7 0 0 0</pose>
             <geometry>
