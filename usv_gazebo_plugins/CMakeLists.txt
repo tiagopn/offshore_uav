@@ -19,8 +19,8 @@ catkin_package(
   CATKIN_DEPENDS message_runtime gazebo_dev roscpp wave_gazebo_plugins
 )
 
-# Plugins require c++11
-set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+# Plugins require c++17
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -fno-diagnostics-color")
 
 include_directories( include
   ${catkin_INCLUDE_DIRS}

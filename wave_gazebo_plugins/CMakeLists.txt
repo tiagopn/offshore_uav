@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 2.8.3)
 project(wave_gazebo_plugins)
 
 ###############################################################################
-# Compile as C++11, supported in ROS Kinetic and newer
+# Compile as C++17, supported in ROS Kinetic and newer
 
-#set(CMAKE_CXX_STANDARD 11)
+#set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# For this package set as C++14
+# For this package set as C++17
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -fno-diagnostics-color")
 
 
