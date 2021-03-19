@@ -70,6 +70,11 @@
       <uri>model://pier</uri>
       <pose frame=''>170 180 -14 0 0 0</pose>
     </include>
+    
+    <include>
+      <uri>model://calib_stereo</uri>
+      <pose frame=''>140.0 220.0 9.0 0 0 0</pose>
+    </include>
 
     <!--Waves-->
     <xacro:include filename="$(find offshore_uav_pack)/worlds/ocean_waves/model.xacro"/>

@@ -67,8 +67,13 @@ catkin_package(
   CATKIN_DEPENDS wamv_gazebo wave_gazebo xacro gazebo_dev geographic_msgs std_msgs message_runtime
   LIBRARIES scoring_plugin
 )
+# Compile as C++17, supported in ROS Kinetic and newer
 
-set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}") 
+#set(CMAKE_CXX_STANDARD 17)
+#set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# For this package set as C++17
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -fno-diagnostics-color")
 
 include_directories(include ${catkin_INCLUDE_DIRS}
   ${Qt5Core_INCLUDE_DIRS}
