@@ -71,20 +71,6 @@
       <pose frame=''>170 180 -14 0 0 0</pose>
     </include>
 
-    <model name="boat_off_1">
-      <include>
-        <uri>model://boat_off</uri>
-        <pose frame=''>118 127 -0.2 0 0 -1.550000</pose>
-      </include>
-    </model>
-
-    <model name="boat_off_2">
-      <include>
-        <uri>model://boat_off</uri>
-        <pose frame=''>128 103 -0.2 0 0 -2.500000</pose>
-      </include>
-    </model>
-
     <!--Waves-->
     <xacro:include filename="$(find offshore_uav_pack)/worlds/ocean_waves/model.xacro"/>
     <xacro:ocean_waves/>
