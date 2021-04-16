@@ -15,10 +15,14 @@ windows:
       layout: tiled
       panes:
         - waitForSimulation; roslaunch mrs_uav_status status.launch
-  - spawn:
+  - spawn_UAV:
       layout: tiled
       panes:
         waitForSimulation; rosservice call /mrs_drone_spawner/spawn "1 $UAV_TYPE --enable-rangefinder --enable-ground-truth --pos_file `pwd`/uav1_pos.yaml --enable-rplidar"
+  - spawn_USV:
+      layout: tiled
+      panes: 
+        waitForSimulation; roslaunch offshore_uav_pack wamv.launch
   - control:
       layout: tiled
       panes:
