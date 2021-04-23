@@ -1,7 +1,7 @@
 name: simulation
 root: ./
 startup_window: status
-pre_window: export UAV_NAME=uav1; export WORLD_FILE=./world.yaml; export RUN_TYPE=simulation; export UAV_TYPE=t650; export WORLD_NAME=simulation; export SENSORS="garmin_down"
+pre_window: export UAV_NAME=uav1; export RUN_TYPE=simulation; export UAV_TYPE=t650; export WORLD_NAME=simulation; export SENSORS="garmin_down"
 windows:
   - roscore:
       layout: tiled
@@ -15,29 +15,35 @@ windows:
       layout: tiled
       panes:
         - waitForSimulation; roslaunch mrs_uav_status status.launch
-  - spawn_UAV:
+  - spawn:
       layout: tiled
       panes:
-        waitForSimulation; rosservice call /mrs_drone_spawner/spawn "1 $UAV_TYPE --enable-rangefinder --enable-ground-truth --pos_file `pwd`/uav1_pos.yaml --enable-rplidar"
-  - spawn_USV:
+        - waitForSimulation; rosservice call /mrs_drone_spawner/spawn "1 $UAV_TYPE --enable-rangefinder --enable-ground-truth --pos_file `pwd`/uav1_pos.yaml --enable-rplidar"
+  - spawn_wamv:
       layout: tiled
-      panes: 
-        waitForSimulation; roslaunch offshore_uav_pack wamv.launch
+      panes:
+        - waitForSimulation; roslaunch offshore_uav_pack wamv.launch
   - control:
       layout: tiled
       panes:
-        - waitForOdometry; roslaunch mrs_uav_general core.launch
+        - waitForOdometry; export UAV_NAME=uav1; roslaunch mrs_uav_general core.launch
+  - Automatic:
+      layout: tiled
+      panes:
+        - waitForSimulation; export UAV_NAME=uav1; roslaunch mrs_uav_general automatic_start.launch  
   - takeoff:
       layout: tiled
       panes:
-        - waitForSimulation; roslaunch mrs_uav_general automatic_start.launch
+      # uav 1
         - 'waitForControl;
-          rosservice call /uav1/control_manager/use_safety_area \"data: false\";
-          rosservice call /$UAV_NAME/mavros/cmd/arming 1;
+          rosservice call /uav1/control_manager/use_safety_area "data: false";
+          rosservice call /uav1/mavros/cmd/arming 1;
           sleep 2;
-          rosservice call /$UAV_NAME/mavros/set_mode 0 offboard'
+          rosservice call /uav1/mavros/set_mode 0 offboard'
   - goto:
       layout: tiled
+      synchronize: after
       panes:
-        - 'history -s rosservice call /$UAV_NAME/control_manager/goto \"goal: \[0.0, 10.0, 1.5, 0.0\]\"'
-
+      # uav 1
+        - 'history -s rosservice call /uav1/control_manager/goto \"goal: \[146.5, 109.5, 10, 0.0\]\";
+           history -s rosservice call /uav1/odometry/change_alt_estimator_type_string "value: baro"'
