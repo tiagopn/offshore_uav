@@ -18,8 +18,26 @@
   <!-- Do we lock the vessel to the world? -->
   <arg name="wamv_locked" default="true" />
 
-  <!-- VRX sensors enabled -->
+  
+  <!-- Do you want to enable sensors? -->
+  <arg name="camera_enabled"       default="true" />
+  <!-- camera_enabled:=$(arg camera_enabled) -->
+
+  <arg name="gps_enabled"          default="true" />
+  <!-- gps_enabled:=$(arg gps_enabled) -->
+  
+  <arg name="imu_enabled"          default="true" />
+  <!-- imu_enabled:=$(arg imu_enabled) -->
+
+  <arg name="lidar_enabled"        default="true" />
+  <!-- lidar_enabled:=$(arg lidar_enabled) -->
+
+  <arg name="ground_truth_enabled" default="true" />
+  <!-- ground_truth_enabled:=$(arg ground_truth_enabled) -->
+  
   <arg name="vrx_sensors_enabled" default="true" />
+  <!-- vrx_sensors_enabled:=$(arg vrx_sensors_enabled) -->
+ 
 
   <!-- Load robot model -->
   <arg name="urdf" default="$(find wamv_gazebo)/urdf/wamv_gazebo.urdf.xacro"/>
@@ -27,6 +45,7 @@
          command="$(find xacro)/xacro &#x002D;&#x002D;inorder '$(arg urdf)'
          locked:=$(arg wamv_locked)
          thruster_config:=$(arg thrust_config)
+         gps_enabled:=$(arg gps_enabled)
          vrx_sensors_enabled:=$(arg vrx_sensors_enabled)
          namespace:=$(arg namespace) "/>
 
@@ -35,5 +54,5 @@
         args="-x $(arg x) -y $(arg y) -z $(arg z)
               -R $(arg R) -P $(arg P) -Y $(arg Y)
               -urdf -param $(arg namespace)/robot_description -model wamv "/>
- 
+
 </launch>
