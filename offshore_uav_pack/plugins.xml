@@ -1,0 +1,7 @@
+<!-- WAM-V - UFPB - NODELET -->
+
+<library path="lib/libwamv">
+  <class name="wamv_usv/wamv" type="wamv_usv::wamv" base_class_type="nodelet::Nodelet">
+    <description>wamv nodelet</description>
+  </class>
+</library>

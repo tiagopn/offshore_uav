@@ -4,24 +4,25 @@
   <version>0.6.13</version>
   <description>The offshore_uav package</description>
 
-  <maintainer email="musa.marcusso@de.bosch.com">Musa Morena Marcusso Manhaes</maintainer>
+  <maintainer email="equipe@laser.ufpb.br">Equipe UAV LASER</maintainer>
   
-  <author email="musa.marcusso@de.bosch.com">Musa Morena Marcusso Manhaes</author>
-  <author email="sebastian.scherer2@de.bosch.com">Sebastian Scherer</author>
-  <author email="luizricardo.douat@de.bosch.com">Luiz Ricardo Douat</author>
-
   <license>Apache-2.0</license>
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>ruby</build_depend>
 
   <exec_depend>wave_gazebo_plugins</exec_depend>
+  <depend>roscpp</depend>
+  <depend>nodelet</depend>
   <depend>gazebo_ros</depend>
   <depend>xacro</depend>
+  <depend>std_msgs</depend>
 
 
   <export>
+    <nodelet plugin="${prefix}/plugins.xml" />
     <gazebo_ros gazebo_media_path="${prefix}"
                 gazebo_model_path="${prefix}/models"/>
   </export>
+
 </package>

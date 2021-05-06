@@ -20,7 +20,7 @@
 #include <sensor_msgs/Image.h>
 
 /* long unsigned integer message */
-#include <std_msgs>
+#include <std_msgs/Float32.h>
 #include <std_msgs/UInt64.h>
 
 /* some STL includes */
@@ -29,33 +29,14 @@
 
 #include <mutex>
 
-/* some OpenCV includes */
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/opencv.hpp>
-
-/* ROS includes for working with OpenCV and images */
-#include <cv_bridge/cv_bridge.h>
-#include <image_geometry/pinhole_camera_model.h>
-#include <image_transport/image_transport.h>
-
-/* custom helper functions from our library */
-#include <mrs_lib/param_loader.h>
-#include <mrs_lib/transformer.h>
 
 /* ROS includes for LaserScan Lib */
 #include <sensor_msgs/LaserScan.h>
 
 /* ROS includes for Odometry*/
 #include <math.h>
-#include <mrs_msgs/Vec4.h>
 #include <nav_msgs/Odometry.h>
 #include <std_srvs/Trigger.h>
-
-#include "mavros_msgs/CommandBool.h"
-#include "mavros_msgs/SetMode.h"
-
 
 namespace wamv_usv
 {
@@ -101,7 +82,8 @@ namespace wamv_usv
 
             // | ------------------- helper functions --------------------- |
             void wait(int time = 10, std::string msg = "Waiting...");
-            void gotoGlobal(mrs_msgs::Vec4 srv);
+            void gotoGlobal(std_msgs::Float32 x, std_msgs::Float32 y, std_msgs::Float32 z);
+            void controlThrust(std_msgs::Float32 force, std_msgs::Float32 angle);
 
             // | ------------------------ service server callbacks -----------------------
             // |

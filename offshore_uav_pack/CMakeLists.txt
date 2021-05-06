@@ -9,10 +9,17 @@ endif()
 
 find_package(catkin REQUIRED COMPONENTS
   xacro
+  std_msgs
 )
 
 catkin_package(
-  CATKIN_DEPENDS xacro
+  INCLUDE_DIRS include
+  LIBRARIES wamv
+  CATKIN_DEPENDS xacro std_msgs
+)
+
+include_directories(include
+  ${catkin_INCLUDE_DIRS}
 )
 
 # Model files to be processed with erb
@@ -54,3 +61,7 @@ xacro_add_files(
   ${XACRO_INORDER} INSTALL DESTINATION worlds
 )
 
+# Necessario pra WAMV
+add_library(wamv src/wamv.cpp)
+add_dependencies(wamv ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(wamv ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
