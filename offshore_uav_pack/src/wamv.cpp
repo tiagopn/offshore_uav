@@ -1,5 +1,9 @@
 #include <wamv.h>
 
+/* every nodelet must include macros which export the class as a nodelet plugin
+ */
+#include <pluginlib/class_list_macros.h>
+
 namespace wamv_usv {
     void wamv::onInit(){
         /* obtain node handle */
