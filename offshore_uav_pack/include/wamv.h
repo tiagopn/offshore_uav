@@ -61,24 +61,26 @@ namespace wamv_usv
             int _rate_timer_check_subscribers_;
 
             /* Subscribers */
-            image_transport::Subscriber imageSubscriber;
-            ros::Subscriber uavStateSubscriber;
-            ros::Subscriber uavMovimentSubscriber;
+            ros::Subscriber usvStateSubscriber;
+            ros::Subscriber usvMovimentSubscriber;
             ros::Subscriber cameraInfoSubscriber;
             ros::Subscriber lidarSubscriber;
 
-            ros::Publisher pub_mode_changed_
-
-            ros::ServiceClient rightThrust;
-            ros::ServiceClient leftThrust;
-            ros::ServiceClient rightAngle;
-            ros::ServiceClient leftAngle;
+            ros::Publisher pub_mode_changed_;
+   
+            ros::Publisher rightThrust;
+            ros::Publisher leftThrust;
+            ros::Publisher rightAngle;
+            ros::Publisher leftAngle;
 
             // | ----------------------- message filters callbacks -----------------------
             // |
 
             // | ---------------------- msg callbacks --------------------- |
-            ros::Subscriber usvMovimentSubscriber;
+
+            ros::Timer usvMovimentTimer;            
+            void movimentInCallback(const ros::TimerEvent& event);
+
 
             // | ------------------- helper functions --------------------- |
             void wait(int time = 10, std::string msg = "Waiting...");
@@ -90,6 +92,6 @@ namespace wamv_usv
 
             ros::ServiceClient srv_client_goto_;
             ros::ServiceClient armingClient;
-    }
+    };
 }
 #endif

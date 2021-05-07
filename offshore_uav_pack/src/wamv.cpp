@@ -1,7 +1,4 @@
 #include <wamv.h>
-/* every nodelet must include macros which export the class as a nodelet plugin
- */
-#include <pluginlib/class_list_macros.h>
 
 namespace wamv_usv {
     void wamv::onInit(){
@@ -24,26 +21,17 @@ namespace wamv_usv {
 
         // | ------------------- load ros parameters ------------------ |
 
-        mrs_lib::ParamLoader param_loader(nh, "wamv");
-        param_loader.loadParam("USV_NAME", _usv_name_);
-        param_loader.loadParam("gui", _gui_);
-        
-        if (!param_loader.loadedSuccessfully())
-        {
-            ROS_ERROR("[WAMV]: failed to load non-optional parameters!");
-            ros::shutdown();
-        }
-
+    
         // | ----------------- initialize subscribers ----------------- |
 
-        usvMovimentSubscriber = nh.subscribe("uav_state_in", 1000, &::movimentInCallback, this);
-
+        // usvMovimentSubscriber = nh.subscribe("", 1000, &wamv::movimentInCallback, this);
+        usvMovimentTimer = nh.createTimer(20, &wamv::movimentInCallback, this);
         // | -------------- initialize serviceClients ----------------- |
 
-        rightThrust = n.serviceClient<std_msgs::Float32>("/right_thrust_cmd");
-        rightAngle = n.serviceClient<std_msgs::Float32>("/right_thrust_angle");
-        leftThrust = n.serviceClient<std_msgs::Float32>("/left_thrust_cmd")
-        leftAngle = n.serviceClient<std_msgs::Float32>("/left_thrust_angle");
+        rightThrust = nh.advertise<std_msgs::Float32>("/wamv/thrusters/right_thrust_cmd", 10);
+        rightAngle = nh.advertise<std_msgs::Float32>("/wamv/thrusters/right_angle_cmd", 10);
+        leftThrust = nh.advertise<std_msgs::Float32>("/wamv/thrusters/left_thrust_cmd", 10);
+        leftAngle = nh.advertise<std_msgs::Float32>("/wamv/thrusters/left_angle_cmd", 10);
 
         ros::AsyncSpinner spinner(0); // Use all threads avaliable
         spinner.start();
@@ -56,34 +44,30 @@ namespace wamv_usv {
     // ██║╚██╔╝██║██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║██╔══╝  ██║╚██╗██║   ██║       ██║██║╚██╗██║
     // ██║ ╚═╝ ██║╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║███████╗██║ ╚████║   ██║       ██║██║ ╚████║
     // ╚═╝     ╚═╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝       ╚═╝╚═╝  ╚═══╝
-    void wamv::movimentInCallback(){
-        std_msgs::Float32 forceThruster, angleThruster;
-        forceThruster = 1.0;
-        angleThruster = 0.0;
-
+    void wamv::movimentInCallback(const ros::TimerEvent& event){
+        std_msgs::Float32 forceThruster;
+        std_msgs::Float32 angleThruster;
+        
+        forceThruster.data = 1.0f;
+        angleThruster.data = 0.0f;
+        
         controlThrust(forceThruster, angleThruster);
         wamv::wait(10, "Moving WAM-V");
 
-        forceThruster = 0.0;
-        angleThruster = 0.0;
+        forceThruster.data = 0.0f;
+        angleThruster.data = 0.0f;
 
         controlThrust(forceThruster, angleThruster);
         wamv::wait(10, "Stoping WAM-V");
     }    
 
     void wamv::controlThrust(std_msgs::Float32 force, std_msgs::Float32 angle){
-        if(rightThrust.call(force) && 
-           leftThrust.call(force)  &&
-           rightAngle.call(angle) &&
-           leftAngle.call(angle)
-        ){
-            ROS_INFO("Moving to Thrust force/angle [%.2f/%.2f]", force, angle);
-        }
-        else{
-            ROS_ERROR("[WAMV]   -   Failed to call service")
-        }
-        
+        rightThrust.publish(force);
+        leftThrust.publish(force);
+        rightAngle.publish(angle);
+        leftAngle.publish(angle);
     }
 }
+
 PLUGINLIB_EXPORT_CLASS(wamv_usv::wamv, nodelet::Nodelet);
     
