@@ -100,8 +100,8 @@
     <xacro:include filename="$(arg sensor_xacro_file)"/>
     <xacro:yaml_sensors />
 
-    <!-- Add CPU Cases
-    <xacro:include filename="$(find wamv_description)/urdf/cpu_cases.xacro" />
+     <!-- Add CPU Cases -->
+    <!-- <xacro:include filename="$(find wamv_description)/urdf/cpu_cases.xacro" />
     <xacro:cpu_cases position="-0.15 0 1.53" orientation="0 0 0"/> -->
   </xacro:if>
   
@@ -113,9 +113,9 @@
     </xacro:if>
     
     <!-- Add simulated GPS -->
-    <!-- <xacro:if value="$(arg gps_enabled)">
+    <xacro:if value="$(arg gps_enabled)">
       <xacro:wamv_gps name="gps_wamv" x="-0.85" />
-    </xacro:if> -->
+    </xacro:if>
     
     <!-- Add Simulated IMU -->
     <xacro:if value="$(arg imu_enabled)">
@@ -140,9 +140,9 @@
     <!-- ==== VRX sensor configuration ==== -->
     <xacro:if value="$(arg vrx_sensors_enabled)">
     
-      <!-- Add CPU Cases
-      <xacro:include filename="$(find wamv_description)/urdf/cpu_cases.xacro" />
-      <xacro:cpu_cases position="-0.15 0 1.53" orientation="0 0 0"/> -->
+       <!-- Add CPU Cases -->
+      <!-- <xacro:include filename="$(find wamv_description)/urdf/cpu_cases.xacro" />
+      <xacro:cpu_cases position="-0.15 0 1.53" orientation="0 0 0"/>  -->
     
       <!-- Add a stereo camera pair -->
       <xacro:wamv_camera name="front_left_camera" y="0.1" x="0.75" P="${radians(15)}" />
@@ -152,7 +152,7 @@
       <xacro:wamv_camera name="middle_right_camera" y="-0.45" P="${radians(15)}" Y="${radians(-90)}" post_Y="${radians(-90)}" />
     
       <!-- Add simulated GPS -->
-      <!-- <xacro:wamv_gps name="gps_wamv" x="-0.85" /> -->
+      <xacro:wamv_gps name="gps_wamv" x="-0.85" />
     
       <!-- Add Simulated IMU -->
       <xacro:wamv_imu name="imu_wamv" y="-0.2" />
