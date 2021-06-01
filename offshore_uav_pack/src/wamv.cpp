@@ -6,6 +6,7 @@
 
 namespace wamv_usv {
     void wamv::onInit(){
+
         /* obtain node handle */
         ros::NodeHandle nh("~");
 
@@ -24,7 +25,13 @@ namespace wamv_usv {
         ros::NodeHandle nhTakeoff;
 
         // | ------------------- load ros parameters ------------------ |
+        
+        /* (mrs_lib implementation checks whether the parameter was loaded or not) */
 
+        // mrs_lib::ParamLoader param_loader(nh, "wamv");
+
+        // param_loader.loadParam("UAV_NAME", _uav_name_);
+        // param_loader.loadParam("gui", _gui_);
     
         // | ----------------- initialize subscribers ----------------- |
 
@@ -36,7 +43,8 @@ namespace wamv_usv {
         rightAngle = nh.advertise<std_msgs::Float32>("/wamv/thrusters/right_angle_cmd", 10);
         leftThrust = nh.advertise<std_msgs::Float32>("/wamv/thrusters/left_thrust_cmd", 10);
         leftAngle = nh.advertise<std_msgs::Float32>("/wamv/thrusters/left_angle_cmd", 10);
-
+        ROS_INFO_ONCE("[WAMV] - Iniciado programa!");
+        
         ros::AsyncSpinner spinner(0); // Use all threads avaliable
         spinner.start();
         ros::waitForShutdown();

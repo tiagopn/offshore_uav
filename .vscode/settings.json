@@ -9,5 +9,6 @@
         "*.ipp": "cpp",
         "condition_variable": "cpp",
         "future": "cpp"
-    }
+    },
+    "python.pythonPath": "/bin/python2"
 }

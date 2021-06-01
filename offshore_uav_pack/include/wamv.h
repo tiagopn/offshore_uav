@@ -29,6 +29,7 @@
 
 #include <mutex>
 
+/* custom helper functions from our library */
 
 /* ROS includes for LaserScan Lib */
 #include <sensor_msgs/LaserScan.h>
@@ -52,7 +53,7 @@ namespace wamv_usv
             bool _gui_;
 
             /* variables*/
-            std::string _usv_name_;
+            std::string _uav_name_;
 
              // | --------------------- timer callbacks -------------------- |
 

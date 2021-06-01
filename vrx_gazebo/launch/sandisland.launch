@@ -36,11 +36,14 @@
   <arg name="wamv_locked" default="true" />
 
   <!-- Do you want to enable sensors? -->
-  <arg name="camera_enabled"       default="false" />
-  <arg name="gps_enabled"          default="false" />
-  <arg name="imu_enabled"          default="false" />
-  <arg name="lidar_enabled"        default="false" />
-  <arg name="ground_truth_enabled" default="false" />
+  <arg name="camera_enabled"       default="true" />
+  <arg name="gps_enabled"          default="true" />
+  <arg name="imu_enabled"          default="true" />
+  <arg name="lidar_enabled"        default="true" />
+  <arg name="ground_truth_enabled" default="true" />
+   <arg name="vrx_sensors_enabled" default="true" />
+  <!-- vrx_sensors_enabled:=$(arg vrx_sensors_enabled) -->
+ 
 
   <!-- Start Gazebo with the world file -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -59,10 +62,7 @@
          command="$(find xacro)/xacro &#x002D;&#x002D;inorder '$(arg urdf)'
          locked:=$(arg wamv_locked)
          thruster_config:=$(arg thrust_config)
-         camera_enabled:=$(arg camera_enabled)
-         gps_enabled:=$(arg gps_enabled)
-         imu_enabled:=$(arg imu_enabled)
-         lidar_enabled:=$(arg lidar_enabled)
+         vrx_sensors_enabled:=$(arg vrx_sensors_enabled)
          ground_truth_enabled:=$(arg ground_truth_enabled)
          namespace:=$(arg namespace) "/>
 

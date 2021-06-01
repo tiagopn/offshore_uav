@@ -16,6 +16,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -fno-diagnostics-color")
 if(POLICY CMP0054)
   cmake_policy(SET CMP0054 OLD)
 endif()
+if(POLICY CMP0048)
+  cmake_policy(SET CMP0048 OLD)
+endif()
 
 ###############################################################################
 # Other dependencies...
