@@ -106,34 +106,25 @@
     <!-- THE LAND BASE MODEL 1 -->
     <model name="land_base_1">
       <include>
-        <uri>model://competition/land_base</uri>
+        <uri>model://competition/base</uri>
         <!-- Pose ( x y z r p y ) -->
         <pose frame=''>110.5 109 13.612 0 0 0</pose>
       </include>
     </model>
-
+    
     <!-- THE LAND BASE MODEL 1 -->
     <model name="land_base_2">
       <include>
-        <uri>model://competition/land_base</uri>
+        <uri>model://competition/base</uri>
         <!-- Pose ( x y z r p y ) -->
-        <pose frame=''>175 140 2.512 0 0 0</pose>
+        <pose frame=''>175 140 2.6 0 0 0</pose>
       </include>
     </model>
 
     <!-- THE LAND BASE MODEL 1 -->
     <model name="land_base_3">
       <include>
-        <uri>model://competition/land_base</uri>
-        <!-- Pose ( x y z r p y ) -->
-        <pose frame=''>175 110 2.512 0 0 0</pose>
-      </include>
-    </model>
-
-    <!-- THE LAND BASE MODEL 1 -->
-    <model name="land_base_4">
-      <include>
-        <uri>model://competition/land_base</uri>
+        <uri>model://competition/base</uri>
         <!-- Pose ( x y z r p y ) -->
         <pose frame=''>75 96 9.862 0 0 0</pose>
       </include>
