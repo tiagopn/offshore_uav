@@ -84,6 +84,70 @@
       <pose frame=''>0 0 -18 0 -0 0</pose>
     </include>
 
+    <!-- THE BANNER MODEL -->
+    <model name="banner_front">
+      <include>
+        <uri>model://competition/banner</uri>
+        <!-- Pose ( x y z r p y ) -->
+        <pose frame=''>107.8 88.7 12 0 -0 -1.5708</pose>
+      </include>
+    </model>
+
+    <!-- THE BANNER MODEL -->
+    <model name="banner_back">
+      <include>
+        <uri>model://competition/banner</uri>
+        <!-- Pose ( x y z r p y ) -->
+        <pose frame=''>68.35 101.7 12 0 -0 1.5708</pose>
+      </include>
+    </model>
+
+
+    <!-- THE LAND BASE MODEL 1 -->
+    <model name="land_base_1">
+      <include>
+        <uri>model://competition/land_base</uri>
+        <!-- Pose ( x y z r p y ) -->
+        <pose frame=''>110.5 109 13.612 0 0 0</pose>
+      </include>
+    </model>
+
+    <!-- THE LAND BASE MODEL 1 -->
+    <model name="land_base_2">
+      <include>
+        <uri>model://competition/land_base</uri>
+        <!-- Pose ( x y z r p y ) -->
+        <pose frame=''>175 140 2.512 0 0 0</pose>
+      </include>
+    </model>
+
+    <!-- THE LAND BASE MODEL 1 -->
+    <model name="land_base_3">
+      <include>
+        <uri>model://competition/land_base</uri>
+        <!-- Pose ( x y z r p y ) -->
+        <pose frame=''>175 110 2.512 0 0 0</pose>
+      </include>
+    </model>
+
+    <!-- THE LAND BASE MODEL 1 -->
+    <model name="land_base_4">
+      <include>
+        <uri>model://competition/land_base</uri>
+        <!-- Pose ( x y z r p y ) -->
+        <pose frame=''>75 96 9.862 0 0 0</pose>
+      </include>
+    </model>
+
+    <!-- THE PIPE MODEL -->
+    <model name="pipe">
+      <include>
+        <uri>model://competition/pipe</uri>
+          <!-- Pose ( x y z r p y ) -->
+        <pose frame=''>80 96 10 0 -0 -0.2</pose>
+      </include>
+    </model>
+
     <include>
       <uri>model://oil_rig</uri>
       <pose frame=''>105 80 -8 0 1.5708 3.141593</pose>
@@ -99,9 +163,17 @@
       <pose frame=''>140.0 220.0 9.0 0 0 0</pose>
     </include>
 
+    <!-- user camera {-->
+    <gui>
+      <camera name="camera">
+        <pose>70 70 20 0 0.4 1.0</pose>
+      </camera>
+    </gui>
+
     <!--Waves-->
     <xacro:include filename="$(find offshore_uav_pack)/worlds/ocean_waves/model.xacro"/>
     <xacro:ocean_waves/>
+
 
   </world>
 </sdf>
