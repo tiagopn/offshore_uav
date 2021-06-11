@@ -3,4 +3,24 @@ uav_name:
   x: 140.0
   y: 220.0
   z: 19.0
-  heading: 3.14
+  heading: 0.0
+  
+  # Posição da Base inicial
+  # x: 140.0
+  # y: 220.0
+  # z: 19.0
+
+  # Posição da Base do OFFSHORE
+  # x: 107.0
+  # y: 110.0
+  # z: 13.8
+
+  # Posição Inicial do Tubo
+  # x: 81.3
+  # y: 105.5
+  # z: 12.0
+
+  # Posição final do Tubo
+  # x: 81.3
+  # y: 85.5
+  # z: 12.0

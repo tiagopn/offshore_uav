@@ -102,13 +102,21 @@
       </include>
     </model>
 
+    <!-- THE LAND BASE MODEL 1 -->
+    <model name="cost_base">
+      <include>
+        <uri>model://competition/cost_base</uri>
+        <!-- Pose ( x y z r p y ) -->
+        <pose frame=''>110.5 109.0 13.612 0 0 0</pose>
+      </include>
+    </model>
 
     <!-- THE LAND BASE MODEL 1 -->
     <model name="land_base_1">
       <include>
         <uri>model://competition/base</uri>
         <!-- Pose ( x y z r p y ) -->
-        <pose frame=''>110.5 109 13.612 0 0 0</pose>
+        <pose frame=''>110.5 109.0 13.612 0 0 0</pose>
       </include>
     </model>
     
@@ -136,6 +144,28 @@
         <uri>model://competition/pipe</uri>
           <!-- Pose ( x y z r p y ) -->
         <pose frame=''>80 96 10 0 -0 -0.2</pose>
+      </include>
+    </model>
+
+
+    <!-- REMEMBER!!! IN THE CHALLENGE WIIL BE JUST 5 OF ALL SENSORS -->
+    
+    <!-- THE SENSOR GREEN 1 MODEL -->
+    <model name="sensor_green_1">
+      <include>
+        <uri>model://competition/sensor_green</uri>
+          <!-- Pose ( x y z r p y ) -->
+        <pose frame=''>80.0 100.0 10.9 0.0 0.0 0.0</pose>
+      </include>
+    </model>
+
+    
+    <!-- THE SENSOR RED 1 MODEL -->
+    <model name="sensor_red_1">
+      <include>
+        <uri>model://competition/sensor_red</uri>
+          <!-- Pose ( x y z r p y ) -->
+        <pose frame=''>80.0 90.0 10.9 0.0 0.0 0.0</pose>
       </include>
     </model>
 

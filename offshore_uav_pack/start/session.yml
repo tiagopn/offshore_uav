@@ -18,7 +18,7 @@ windows:
   - spawn:
       layout: tiled
       panes:
-        - waitForSimulation; rosservice call /mrs_drone_spawner/spawn "1 $UAV_TYPE --enable-rangefinder --enable-ground-truth --pos_file `pwd`/uav1_pos.yaml --enable-rplidar"
+        - waitForSimulation; rosservice call /mrs_drone_spawner/spawn "1 $UAV_TYPE --enable-rangefinder --enable-ground-truth --pos_file `pwd`/uav1_pos.yaml --enable-rplidar --enable-bluefox-camera"
   - spawn_wamv:
       layout: tiled
       panes:
@@ -39,7 +39,9 @@ windows:
           rosservice call /uav1/control_manager/use_safety_area "data: false";
           rosservice call /uav1/mavros/cmd/arming 1;
           sleep 2;
-          rosservice call /uav1/mavros/set_mode 0 offboard'
+          rosservice call /uav1/mavros/set_mode 0 offboard;
+          rosservice call /uav1/odometry/change_alt_estimator_type_string "value: baro"'
+          
   - goto:
       layout: tiled
       synchronize: after
