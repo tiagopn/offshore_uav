@@ -82,7 +82,7 @@
     <!-- user camera {-->
     <gui>
       <camera name="camera">
-        <pose>120 200 20 0 0.4 1.0</pose>
+        <pose>90 60 10 0 0.4 1.0</pose>
       </camera>
     </gui>
     
@@ -154,6 +154,14 @@
         <pose frame=''>80 96 10 0 -0 -0.2</pose>
       </include>
     </model>
+
+    <!-- THE CONTAINER MODEL -->
+    <!-- <model name="container">
+      <include>
+        <uri>model://competition/container</uri>
+        <pose frame=''>100 70 -2 1.39 -0 1.57</pose>
+      </include>
+    </model> -->
 
 
     <!-- REMEMBER!!! IN THE CHALLENGE WIIL BE JUST 5 OF ALL SENSORS -->
