@@ -79,6 +79,14 @@
 
     <!--}-->
 
+    <!-- user camera {-->
+    <gui>
+      <camera name="camera">
+        <pose>120 200 20 0 0.4 1.0</pose>
+      </camera>
+    </gui>
+    
+    <!-- Base -->
     <include>
       <uri>model://lake_bottom</uri>
       <pose frame=''>0 0 -18 0 -0 0</pose>
@@ -107,7 +115,7 @@
       <include>
         <uri>model://competition/cost_base</uri>
         <!-- Pose ( x y z r p y ) -->
-        <pose frame=''>110.5 109.0 13.612 0 0 0</pose>
+        <pose frame=''>140 220 10 1.57 0 0</pose>
       </include>
     </model>
 
@@ -184,12 +192,7 @@
       <pose frame=''>140.0 220.0 9.0 0 0 0</pose>
     </include>
 
-    <!-- user camera {-->
-    <gui>
-      <camera name="camera">
-        <pose>70 70 20 0 0.4 1.0</pose>
-      </camera>
-    </gui>
+    
 
     <!--Waves-->
     <xacro:include filename="$(find offshore_uav_pack)/worlds/ocean_waves/model.xacro"/>

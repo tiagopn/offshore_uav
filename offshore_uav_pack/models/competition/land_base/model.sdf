@@ -18,8 +18,8 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://competition/land_base/meshes/land_base_1.obj</uri>
-            <scale>1.5 1.5 1.5</scale>
+            <uri>model://land_base/meshes/land_base_1.obj</uri>
+            <scale>1 1 1</scale>
           </mesh>
         </geometry>
         <transparency>0</transparency>
@@ -31,8 +31,8 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://competition/land_base/meshes/land_base_1.obj</uri>
-            <scale>1.5 1.5 1.5</scale>
+            <uri>model://land_base/meshes/land_base_1.obj</uri>
+            <scale>1 1 1</scale>
           </mesh>
         </geometry>
         <surface>
