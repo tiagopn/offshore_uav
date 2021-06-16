@@ -34,6 +34,6 @@
   <node name="spawn_model" pkg="gazebo_ros" type="spawn_model"
         args="-x $(arg x) -y $(arg y) -z $(arg z)
               -R $(arg R) -P $(arg P) -Y $(arg Y)
-              -urdf -param $(arg namespace)/robot_description -model wamv "/>
+              -urdf -param $(arg namespace)/robot_description -model $(arg namespace)"/>
  
 </launch>
