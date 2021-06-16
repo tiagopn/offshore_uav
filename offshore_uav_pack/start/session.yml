@@ -22,8 +22,8 @@ windows:
   - spawn_wamv:
       layout: tiled
       panes:
-        - waitForSimulation; roslaunch offshore_uav_pack wamv.launch --screen "namespace:=wamv1" "x:=160" "y:=110" 
-        - waitForSimulation; roslaunch offshore_uav_pack wamv.launch --screen "namespace:=wamv2" "x:=160" "y:=100" 
+        - waitForSimulation; roslaunch offshore_uav_pack wamv.launch "namespace:=wamv1" "x:=160" "y:=110" 
+        - waitForSimulation; roslaunch offshore_uav_pack wamv.launch "namespace:=wamv2" "x:=160" "y:=100" 
   - control:
       layout: tiled
       panes:
