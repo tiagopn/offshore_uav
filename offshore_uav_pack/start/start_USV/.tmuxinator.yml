@@ -14,12 +14,16 @@ windows:
   - spawn_wamv:
       layout: tiled
       panes:
-        - history -s roslaunch offshore_uav_pack wamv.launch
+        - export USV_NAME=wamv; waitForSimulation; roslaunch offshore_uav_pack wamv.launch
   - controlWAMV:
       layout: tiled
       panes:
-        - history -s roslaunch offshore_uav_pack controlWAMV.launch
-  - RQT_Publisher:
+        - export USV_NAME=wamv; history -s  roslaunch offshore_uav_pack wamv_usv.launch
+  - GPS:
       layout: tiled
       panes:
-        - history -s rosrun rqt_publisher rqt_publisher
+        - history -s rostopic echo /wamv/sensors/gps/gps/fix
+  - IMU:
+      layout: tiled
+      panes:
+        - history -s rostopic echo /wamv/sensors/imu/imu/data
