@@ -8,7 +8,9 @@
     "files.associations": {
         "*.ipp": "cpp",
         "condition_variable": "cpp",
-        "future": "cpp"
+        "future": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp"
     },
     "python.pythonPath": "/bin/python2"
 }

@@ -18,6 +18,7 @@
 /* camera image messages */
 #include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/Image.h>
+#include <sensor_msgs/Imu.h>
 
 /* long unsigned integer message */
 #include <std_msgs/Float32.h>
@@ -38,10 +39,14 @@
 #include <math.h>
 #include <nav_msgs/Odometry.h>
 #include <std_srvs/Trigger.h>
+#include <pluginlib/class_list_macros.h>
+
+#include <mrs_lib/attitude_converter.h>
+#include <mrs_lib/param_loader.h>
 
 namespace wamv_usv
 {
-    class wamv : public nodelet::Nodelet
+    class wamv:public nodelet::Nodelet
     {
         public:
             /* onInit() is called when nodelet is launched (similar to main() in regular node) */
@@ -53,7 +58,7 @@ namespace wamv_usv
             bool _gui_;
 
             /* variables*/
-            std::string _uav_name_;
+            std::string _usv_name_;
 
              // | --------------------- timer callbacks -------------------- |
 
@@ -66,6 +71,10 @@ namespace wamv_usv
             ros::Subscriber usvMovimentSubscriber;
             ros::Subscriber cameraInfoSubscriber;
             ros::Subscriber lidarSubscriber;
+
+            ros::Subscriber usvGPSSubscriber;
+            ros::Subscriber usvIMUSubscriber;
+            ros::Subscriber usvP3DSubscriber;
 
             ros::Publisher pub_mode_changed_;
    
@@ -81,15 +90,43 @@ namespace wamv_usv
 
             ros::Timer usvMovimentTimer;            
             void movimentInCallback(const ros::TimerEvent& event);
-
+            void imuInCallback(const sensor_msgs::Imu::ConstPtr &msg);
+            void p3dInCallback(const nav_msgs::Odometry::ConstPtr &msg);
+            
 
             // | ------------------- helper functions --------------------- |
-            void wait(int time = 10, std::string msg = "Waiting...");
-            void gotoGlobal(std_msgs::Float32 x, std_msgs::Float32 y, std_msgs::Float32 z);
-            void controlThrust(std_msgs::Float32 force, std_msgs::Float32 angle);
+            void controlThrustLeft(std_msgs::Float32 force, std_msgs::Float32 angle);
+            void controlThrustRight(std_msgs::Float32 force, std_msgs::Float32 angle);
+            void goFront(int movementTime);
+            void goBack(int movementTime);
+            void turnRight(int movementTime);
+            void turnLeft(int movementTime);
+            // | ----------------------- Variable Control --------------------------------|
+
+            bool moveCompleted;
 
             // | ------------------------ service server callbacks -----------------------
             // |
+            // | --------------------- Drone variables -------------------- |
+        
+            float position_x_ = 0.0;
+            float position_y_ = 0.0;
+            float position_z_ = 0.0;
+        
+            float acceleration_x_ = 0.0;
+            float acceleration_y_ = 0.0;
+            float acceleration_z_ = 0.0;
+
+            float angular_velocity_x_ = 0.0;
+            float angular_velocity_y_ = 0.0;
+            float angular_velocity_z_ = 0.0;
+            
+            float orientation_x_ = 0.0;
+            float orientation_y_ = 0.0;
+            float orientation_z_ = 0.0;
+            float orientation_angle_ = 0.0;
+            
+            const float PI = 3.14159265359;
 
             ros::ServiceClient srv_client_goto_;
             ros::ServiceClient armingClient;

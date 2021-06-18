@@ -17,6 +17,9 @@
   <depend>gazebo_ros</depend>
   <depend>xacro</depend>
   <depend>std_msgs</depend>
+  <depend>mrs_msgs</depend>
+  <depend>mrs_lib</depend>
+
 
 
   <export>

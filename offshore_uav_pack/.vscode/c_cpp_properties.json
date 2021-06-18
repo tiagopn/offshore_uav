@@ -1,0 +1,47 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/laser/mrs_workspace/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/laser/workspace/devel/include/**",
+        "/home/laser/workspace/src/Equipe_UAV_Laser/include/**",
+        "/home/laser/workspace/src/example_ros_packages/ros_packages/example_ros_pluginlib/example_manager/include/**",
+        "/home/laser/mrs_workspace/src/hector_slam/hector_geotiff/include/**",
+        "/home/laser/mrs_workspace/src/hector_slam/hector_map_tools/include/**",
+        "/home/laser/mrs_workspace/src/hector_slam/hector_mapping/include/**",
+        "/home/laser/mrs_workspace/src/hector_slam/hector_marker_drawing/include/**",
+        "/home/laser/mrs_workspace/src/uav_core/ros_packages/mavros/libmavconn/include/**",
+        "/home/laser/mrs_workspace/src/simulation/ros_packages/mavlink_sitl_gazebo/include/**",
+        "/home/laser/mrs_workspace/src/uav_core/ros_packages/mavros/mavros/include/**",
+        "/home/laser/mrs_workspace/src/uav_core/ros_packages/mavros/mavros_msgs/include/**",
+        "/home/laser/mrs_workspace/src/simulation/ros_packages/mrs_gazebo_common_resources/include/**",
+        "/home/laser/mrs_workspace/src/uav_core/ros_packages/mrs_lib/include/**",
+        "/home/laser/mrs_workspace/src/uav_core/ros_packages/mrs_rviz_plugins/include/**",
+        "/home/laser/mrs_workspace/src/uav_core/ros_packages/mrs_uav_controllers/include/**",
+        "/home/laser/mrs_workspace/src/uav_core/ros_packages/mrs_uav_managers/include/**",
+        "/home/laser/mrs_workspace/src/uav_core/ros_packages/mrs_uav_odometry/include/**",
+        "/home/laser/mrs_workspace/src/uav_core/ros_packages/mrs_uav_status/include/**",
+        "/home/laser/mrs_workspace/src/uav_core/ros_packages/mrs_uav_trackers/include/**",
+        "/home/laser/mrs_workspace/src/uav_core/ros_packages/mrs_uav_trajectory_generation/include/**",
+        "/home/laser/mrs_workspace/src/uav_core/ros_packages/thirdparty/nlopt_ros/include/**",
+        "/home/laser/mrs_workspace/src/uav_core/ros_packages/thirdparty/nodelet_core/nodelet/include/**",
+        "/home/laser/mrs_workspace/src/uav_core/ros_packages/thirdparty/nodelet_core/nodelet_topic_tools/include/**",
+        "/home/laser/workspace/src/offshore_uav/offshore_uav_pack/include/**",
+        "/home/laser/mrs_workspace/src/uav_core/ros_packages/mavros/test_mavros/include/**",
+        "/home/laser/workspace/src/offshore_uav/usv_gazebo_plugins/include/**",
+        "/home/laser/workspace/src/example_ros_packages/ros_packages/example_ros_vision/include/**",
+        "/home/laser/workspace/src/offshore_uav/vrx_gazebo/include/**",
+        "/home/laser/workspace/src/offshore_uav/wave_gazebo_plugins/include/**",
+        "/home/laser/workspace/src/example_ros_packages/ros_packages/example_ros_uav/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}

@@ -10,12 +10,14 @@ endif()
 find_package(catkin REQUIRED COMPONENTS
   xacro
   std_msgs
+  mrs_msgs
+  mrs_lib
 )
 
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES wamv
-  CATKIN_DEPENDS xacro std_msgs
+  CATKIN_DEPENDS xacro std_msgs mrs_lib mrs_msgs
 )
 
 include_directories(include

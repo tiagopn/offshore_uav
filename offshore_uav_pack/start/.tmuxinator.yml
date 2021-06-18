@@ -22,7 +22,7 @@ windows:
   - spawn_wamv:
       layout: tiled
       panes:
-        - export USV_NAME=wamv; waitForSimulation; roslaunch offshore_uav_pack wamv.launch
+        - waitForSimulation; roslaunch offshore_uav_pack wamv.launch "namespace:=wamv1" "x:= 158" "y:=110"
   - control:
       layout: tiled
       panes:
