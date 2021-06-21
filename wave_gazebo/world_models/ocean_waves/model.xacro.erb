@@ -28,23 +28,21 @@
   # period = ${period} # Peak wave period [s]
   # gain = ${gain}  # Deterined at load time by the world xacro file
   number = 3        # Number of component waves
-  # scale = 1.5       # Spectrum sampling scale 
+  scale = 1.5       # Spectrum sampling scale 
   # direction_x = 1.0 # Direction of peak wave component 
   # direction_y = 0.0
   # angle = 0.4       # Delta direction for components
   tau = 2.0         # Time constant for starting wave [s]
   amplitude = 0.0  # No effect for PMS
   steepness = 0.0  # Not yet supported
-  enableRtt = true
-  rttNoise = 0.1
-  refractOpacity = 0.2
-  reflectOpacity = 0.2
+  shallowRefractRatio = 0.2
+  envReflectRatio = 0.2
 %>
 
 <world xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="ocean_waves" params="gain:=100.1 period:=15
+  <xacro:macro name="ocean_waves" params="gain:=0.1 period:=5
                      direction_x:=1.0 direction_y:=0.0
-                     angle:=0.4 scale:=100.5">
+                     angle:=0.4">
   <model name='ocean_waves'>
     <static>true</static>
     <plugin name="wavefield_plugin" filename="libWavefieldModelPlugin.so">
@@ -56,8 +54,8 @@
 				<model><%= model %></model>
         <period>${period}</period>
         <number><%= number %></number>
-        <scale>${scale}</scale>
-        <gain>${gain}</gain>
+        <scale><%= scale %></scale>
+	<gain>${gain}</gain>
         <direction>${direction_x} ${direction_y}</direction>
         <angle>${angle}</angle>        
         <tau><%= tau %></tau>
@@ -69,16 +67,14 @@
     <link name="ocean_waves_link">
       <visual name="ocean_waves_visual">
         <plugin name="ocean_waves_visual_plugin" filename="libWavefieldVisualPlugin.so">
-          <enableRtt><%= enableRtt %></enableRtt>
-          <rttNoise><%= rttNoise %></rttNoise>
-          <refractOpacity><%= refractOpacity %></refractOpacity>
-          <reflectOpacity><%= reflectOpacity %></reflectOpacity>
+          <shallowRefractRatio><%= shallowRefractRatio %></shallowRefractRatio>
+          <envReflectRatio><%= envReflectRatio %></envReflectRatio>
           <wave>
             <model><%= model %></model>
             <period>${period}</period>
             <number><%= number %></number>
-            <scale>${scale}</scale>
-            <gain>${gain}</gain>
+            <scale><%= scale %></scale>
+	    <gain>${gain}</gain>
             <direction>${direction_x} ${direction_y}</direction>
             <angle>${angle}</angle>        
             <tau><%= tau %></tau>
@@ -88,7 +84,6 @@
         </plugin>
         <geometry>
           <mesh>
-            <scale>${scale} ${scale} 1</scale>
             <uri>model://ocean_waves/meshes/mesh.dae</uri>
           </mesh>
         </geometry>
@@ -104,7 +99,6 @@
         <pose>0 0 -0.05 0 0 0</pose>  <!-- Offset to prevent rendering conflict -->
         <geometry>
           <mesh>
-            <scale>${scale} ${scale} 1</scale>
             <uri>model://ocean_waves/meshes/mesh_below.dae</uri>
           </mesh>
         </geometry>

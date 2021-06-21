@@ -34,8 +34,7 @@
 // updated to be consistent with this convention.
 //
 
-/////////// Input parameters //////////
-// Waves
+// Input parameters
 uniform int Nwaves;
 uniform vec3 eyePos;
 uniform float rescale;
@@ -51,12 +50,11 @@ uniform vec2 dir1;
 uniform vec2 dir2;
 uniform float tau;
 
-/////////// Output variables to fragment shader //////////
+// Output variables
 varying mat3 rotMatrix;
 varying vec3 eyeVec;
 varying vec2 bumpCoord;
 
-// Rtt coordinates
 varying vec4 projectionCoord;
 
 // Compute linear combination of Gerstner waves as described in

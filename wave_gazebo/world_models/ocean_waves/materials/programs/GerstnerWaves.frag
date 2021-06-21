@@ -13,30 +13,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-////////// Input parameters //////////
-// Textures
+// Input parameters
 uniform sampler2D bumpMap;
 uniform samplerCube cubeMap;
 uniform sampler2D reflectMap;
 uniform sampler2D refractMap;
-
-// Colors
 uniform vec4 deepColor;
 uniform vec4 shallowColor;
 uniform float fresnelPower;
 uniform float hdrMultiplier;
-
-// Reflect/refract amount
-uniform float refractOpacity;
-uniform float reflectOpacity;
-
-// Temp fix for camera sensors rendering upsidedown
 uniform int flipAcrossY;
 
-// Noise
-uniform float rttNoise;
+uniform float shallowRefractRatio;
+uniform float envReflectRatio;
 
-////////// Input computed in vertex shader //////////
+// Input computed in vertex shader
 varying mat3 rotMatrix;
 varying vec3 eyeVec;
 varying vec2 bumpCoord;
@@ -47,10 +38,6 @@ void main(void)
 {
   // Do the tex projection manually so we can distort _after_
   vec2 final = projectionCoord.xy / projectionCoord.w;
-
-  // Noise
-  vec3 noiseNormal = (texture2D(bumpMap, (bumpCoord.xy / 5.0)).rgb - 0.5).rbg * rttNoise;
-  final = final + noiseNormal.xz;
 
   // Temp fix for camera sensors rendering upsidedown
   if (flipAcrossY == 1)
@@ -83,11 +70,11 @@ void main(void)
   float waterEnvRatio = clamp(pow(facing, fresnelPower), 0.0, 1.0);
 
   // Water color is mix of refraction color, shallow color, and deep color
-  vec4 realShallowColor = mix(shallowColor, refractionColor, refractOpacity);
+  vec4 realShallowColor = mix(shallowColor, refractionColor, shallowRefractRatio);
   vec4 waterColor = mix(realShallowColor, deepColor, facing);
 
   // Environment color is mix of clouds and reflection
-  vec4 realEnvColor = mix(envColor, reflectionColor, reflectOpacity);
+  vec4 realEnvColor = mix(envColor, reflectionColor, envReflectRatio);
 
   // Perform linear interpolation between reflection and refraction.
   vec4 color = mix(waterColor, realEnvColor, waterEnvRatio);

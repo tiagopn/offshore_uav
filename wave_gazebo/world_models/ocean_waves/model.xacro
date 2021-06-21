@@ -25,9 +25,9 @@
 
 
 <world xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="ocean_waves" params="gain:=100.1 period:=15
+  <xacro:macro name="ocean_waves" params="gain:=0.1 period:=5
                      direction_x:=1.0 direction_y:=0.0
-                     angle:=0.4 scale:=100.5">
+                     angle:=0.4">
   <model name='ocean_waves'>
     <static>true</static>
     <plugin name="wavefield_plugin" filename="libWavefieldModelPlugin.so">
@@ -39,8 +39,8 @@
 				<model>PMS</model>
         <period>${period}</period>
         <number>3</number>
-        <scale>${scale}</scale>
-        <gain>${gain}</gain>
+        <scale>1.5</scale>
+	<gain>${gain}</gain>
         <direction>${direction_x} ${direction_y}</direction>
         <angle>${angle}</angle>        
         <tau>2.0</tau>
@@ -52,16 +52,14 @@
     <link name="ocean_waves_link">
       <visual name="ocean_waves_visual">
         <plugin name="ocean_waves_visual_plugin" filename="libWavefieldVisualPlugin.so">
-          <enableRtt>true</enableRtt>
-          <rttNoise>0.1</rttNoise>
-          <refractOpacity>0.2</refractOpacity>
-          <reflectOpacity>0.2</reflectOpacity>
+          <shallowRefractRatio>0.2</shallowRefractRatio>
+          <envReflectRatio>1.0</envReflectRatio>
           <wave>
             <model>PMS</model>
             <period>${period}</period>
             <number>3</number>
-            <scale>${scale}</scale>
-            <gain>${gain}</gain>
+            <scale>1.5</scale>
+	    <gain>${gain}</gain>
             <direction>${direction_x} ${direction_y}</direction>
             <angle>${angle}</angle>        
             <tau>2.0</tau>
@@ -71,7 +69,6 @@
         </plugin>
         <geometry>
           <mesh>
-            <scale>${scale} ${scale} 1</scale>
             <uri>model://ocean_waves/meshes/mesh.dae</uri>
           </mesh>
         </geometry>
@@ -87,7 +84,6 @@
         <pose>0 0 -0.05 0 0 0</pose>  <!-- Offset to prevent rendering conflict -->
         <geometry>
           <mesh>
-            <scale>${scale} ${scale} 1</scale>
             <uri>model://ocean_waves/meshes/mesh_below.dae</uri>
           </mesh>
         </geometry>

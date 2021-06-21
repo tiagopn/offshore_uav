@@ -1,0 +1,65 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+  <model name='beer_bottle'>
+
+    <link name='link'>
+      <inertial>
+        <mass>0.005</mass>
+        <inertia>
+          <ixx>0.1636</ixx>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>0.1636</iyy>
+          <iyz>0.0</iyz>
+          <izz>0.1636</izz>
+        </inertia>
+      </inertial>
+      <pose>0 0 0 0 -0 0</pose>
+      <visual name='visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://beer_bottle/meshes/beer_bottle.obj</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Green</name>
+          </script>
+        </material>
+        <transparency>0.1</transparency>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+      <collision name="base_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://beer_bottle/meshes/beer_bottle.obj</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+    <static>0</static>
+    <allow_auto_disable>1</allow_auto_disable>
+    <plugin name="BuoyancyPlugin" filename="libbuoyancy_gazebo_plugin.so">
+      <wave_model>ocean_waves</wave_model>
+      <fluid_density>5</fluid_density>
+      <fluid_level>0</fluid_level>
+      <linear_drag>10</linear_drag>
+      <angular_drag>10</angular_drag>
+      <buoyancy name="buoyancy_base">
+        <link_name>link</link_name>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.06773 0.06773 0.254998</size>
+          </box>
+        </geometry>
+      </buoyancy>
+    </plugin>
+  </model>
+</sdf>
