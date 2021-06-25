@@ -99,15 +99,22 @@ namespace wamv_usv
             void controlThrustRight(std_msgs::Float32 force, std_msgs::Float32 angle);
             void goFront(int movementTime);
             void goBack(int movementTime);
+
             void turnRight(int movementTime);
             void turnLeft(int movementTime);
+
+            void turnFrontAngle(float angle);
+            void turnAngle(float angle);
+
+            void gotoGlobal(float x, float y);
+
             // | ----------------------- Variable Control --------------------------------|
 
             bool moveCompleted;
 
             // | ------------------------ service server callbacks -----------------------
             // |
-            // | --------------------- Drone variables -------------------- |
+            // | --------------------- WAM-V variables -------------------- |
         
             float position_x_ = 0.0;
             float position_y_ = 0.0;
@@ -121,12 +128,18 @@ namespace wamv_usv
             float angular_velocity_y_ = 0.0;
             float angular_velocity_z_ = 0.0;
             
-            float orientation_x_ = 0.0;
-            float orientation_y_ = 0.0;
-            float orientation_z_ = 0.0;
-            float orientation_angle_ = 0.0;
+            float heading_rad;
+            float heading_degree;
             
             const float PI = 3.14159265359;
+
+            // | --------------------- Thruster variables -------------------- |
+
+            std_msgs::Float32 forceThrusterRight;
+            std_msgs::Float32 forceThrusterLeft;
+            std_msgs::Float32 angleThrusterRight;
+            std_msgs::Float32 angleThrusterLeft;
+       
 
             ros::ServiceClient srv_client_goto_;
             ros::ServiceClient armingClient;

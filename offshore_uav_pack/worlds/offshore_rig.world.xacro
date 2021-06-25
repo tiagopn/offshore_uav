@@ -80,9 +80,11 @@
     <!--}-->
 
     <!-- user camera {-->
+    <!-- <pose>140 120 8 0 0.2 5.7</pose> -->
+
     <gui>
       <camera name="camera">
-        <pose>140 120 8 0 0.2 5.7</pose>
+        <pose>-20 -20 15 0 0.52 0.52</pose>
       </camera>
     </gui>
 
