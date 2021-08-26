@@ -19,9 +19,7 @@ windows:
       layout: tiled
       panes:
         - waitForSimulation; export UAV_NAME=uav1; rosservice call /mrs_drone_spawner/spawn "1 $UAV_TYPE --enable-rangefinder --enable-ground-truth --pos_file `pwd`/uav1_pos.yaml --enable-rplidar --enable-bluefox-camera"
-        - 'history -s roslaunch offshore_uav_pack spawn_wamv1.launch ";" 
-          roslaunch offshore_uav_pack spawn_wamv2.launch ";"
-          roslaunch offshore_uav_pack spawn_wamv3.launch'
+        - history -s roslaunch offshore_uav_pack spawn_sdf.launch
   - control:
       layout: tiled
       panes:
