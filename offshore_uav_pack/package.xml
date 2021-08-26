@@ -17,7 +17,6 @@
 
   <exec_depend>wave_gazebo_plugins</exec_depend>
   <depend>gazebo_ros</depend>
-  <depend>xacro</depend>
 
 
   <export>
