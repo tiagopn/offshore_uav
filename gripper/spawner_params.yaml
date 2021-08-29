@@ -1,0 +1,2 @@
+# Coloque as linhas desse arquivo no arquivo ~/mrs_workspace/src/simulation/ros_packages/mrs_simulation/config/spawner_params.yaml
+enable_mechanic_gripper: [False, 'Add mechanic gripper', [t650]]

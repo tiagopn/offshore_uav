@@ -1,7 +1,7 @@
 name: simulation
 root: ./
 startup_window: status
-pre_window: export UAV_NAME=uav1; export RUN_TYPE=simulation; export UAV_TYPE=t650; export WORLD_NAME=simulation; export SENSORS="garmin_down"
+pre_window: export UAV_NAME=uav1; export USV_NAME=wamv1; export WORLD_FILE=./world.yaml; export RUN_TYPE=simulation; export UAV_TYPE=t650; export WORLD_NAME=simulation; export SENSORS="garmin_down"
 windows:
   - roscore:
       layout: tiled
@@ -18,32 +18,62 @@ windows:
   - spawn:
       layout: tiled
       panes:
-        - waitForSimulation; rosservice call /mrs_drone_spawner/spawn "1 $UAV_TYPE --enable-rangefinder --enable-ground-truth --pos_file `pwd`/uav1_pos.yaml --enable-rplidar"
-  - spawn_wamv:
-      layout: tiled
-      panes:
-        - waitForSimulation; roslaunch offshore_uav_pack wamv.launch "namespace:=wamv1" "x:= 158" "y:=110"
+        - waitForSimulation; export UAV_NAME=uav1; rosservice call /mrs_drone_spawner/spawn "1 $UAV_TYPE --enable-rangefinder --enable-ground-truth --pos_file `pwd`/uav1_pos.yaml --enable-rplidar --enable-bluefox-camera"
+        - waitForSimulation; export UAV_NAME=uav1; rosservice call /mrs_drone_spawner/spawn "2 $UAV_TYPE --enable-rangefinder --enable-ground-truth --pos_file `pwd`/uav2_pos.yaml --enable-rplidar --enable-bluefox-camera"
+        - waitForSimulation; export UAV_NAME=uav1; rosservice call /mrs_drone_spawner/spawn "3 $UAV_TYPE --enable-rangefinder --enable-ground-truth --pos_file `pwd`/uav3_pos.yaml --enable-rplidar --enable-bluefox-camera"
+        - history -s roslaunch offshore_uav_pack spawn_sdf.launch
   - control:
       layout: tiled
       panes:
-        - waitForOdometry; export UAV_NAME=uav1; roslaunch mrs_uav_general core.launch
-  - Automatic:
-      layout: tiled
-      panes:
-        - waitForSimulation; export UAV_NAME=uav1; roslaunch mrs_uav_general automatic_start.launch  
+      # uav1
+        - export UAV_NAME=uav1; waitForOdometry; roslaunch mrs_uav_general core.launch config_control_manager:=./custom_configs/control_manager.yaml config_odometry:=./custom_configs/odometry.yaml
+      # uav2
+        - export UAV_NAME=uav2; waitForOdometry; roslaunch mrs_uav_general core.launch config_control_manager:=./custom_configs/control_manager.yaml config_odometry:=./custom_configs/odometry.yaml
+      # uav3
+        - export UAV_NAME=uav3; waitForOdometry; roslaunch mrs_uav_general core.launch config_control_manager:=./custom_configs/control_manager.yaml config_odometry:=./custom_configs/odometry.yaml
   - takeoff:
       layout: tiled
       panes:
-      # uav 1
-        - 'waitForControl;
-          rosservice call /uav1/control_manager/use_safety_area "data: false";
-          rosservice call /uav1/mavros/cmd/arming 1;
+      # uav1
+        - export UAV_NAME=uav1; waitForSimulation; roslaunch mrs_uav_general automatic_start.launch
+        - 'export UAV_NAME=uav1;
+          waitForControl;
           sleep 2;
-          rosservice call /uav1/mavros/set_mode 0 offboard'
+          rosservice call /$UAV_NAME/mavros/cmd/arming 1;
+          sleep 2;
+          rosservice call /$UAV_NAME/mavros/set_mode 0 offboard'
+      # uav2
+        - export UAV_NAME=uav2; waitForSimulation; roslaunch mrs_uav_general automatic_start.launch
+        - 'export UAV_NAME=uav2;
+          waitForControl;
+          sleep 2;
+          rosservice call /$UAV_NAME/mavros/cmd/arming 1;
+          sleep 2;
+          rosservice call /$UAV_NAME/mavros/set_mode 0 offboard'
+      # uav3
+        - export UAV_NAME=uav3; waitForSimulation; roslaunch mrs_uav_general automatic_start.launch
+        - 'export UAV_NAME=uav3;
+          waitForControl;
+          sleep 2;
+          rosservice call /$UAV_NAME/mavros/cmd/arming 1;
+          sleep 2;
+          rosservice call /$UAV_NAME/mavros/set_mode 0 offboard'
   - goto:
       layout: tiled
       synchronize: after
       panes:
-      # uav 1
-        - 'history -s rosservice call /uav1/control_manager/goto \"goal: \[146.5, 109.5, 10, 0.0\]\";
-           history -s rosservice call /uav1/odometry/change_alt_estimator_type_string "value: baro"'
+      # uav1
+        - 'export UAV_NAME=uav1; history -s rosservice call /$UAV_NAME/control_manager/goto \"goal: \[0.0, 0.0, 5, 0.0\]\";
+        history -s rosservice call /$UAV_NAME/control_manager/goto \"goal: \[0.0, 0.0, -5, 0.0\]\";
+        history -s rosservice call /$UAV_NAME/control_manager/goto \"goal: \[3.0, 0.0, -8, 0.0\]\";
+        history -s rosservice call /$UAV_NAME/uav_manager/land'
+      # uav2
+        - 'export UAV_NAME=uav2; history -s rosservice call /$UAV_NAME/control_manager/goto \"goal: \[5.0, 0.0, 5, 0.0\]\";
+        history -s rosservice call /$UAV_NAME/control_manager/goto \"goal: \[5.0, 0.0, -5, 0.0\]\";
+        history -s rosservice call /$UAV_NAME/control_manager/goto \"goal: \[-2.0, 0.0, -8, 0.0\]\";
+        history -s rosservice call /$UAV_NAME/uav_manager/hover'
+      # uav3
+        - 'export UAV_NAME=uav3; history -s rosservice call /$UAV_NAME/control_manager/goto \"goal: \[-5.0, 0.0, 5, 0.0\]\";
+        history -s rosservice call /$UAV_NAME/control_manager/goto \"goal: \[-5.0, 0.0, -5, 0.0\]\";
+        history -s rosservice call /$UAV_NAME/control_manager/goto \"goal: \[8.0, 0.0, -8, 0.0\]\";
+        history -s rosservice call /$UAV_NAME/uav_manager/hover'
