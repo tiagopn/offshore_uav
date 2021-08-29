@@ -92,6 +92,11 @@
       <pose frame=''>40 50 -14 0 0 0</pose>
     </include>
 
+    <include>
+      <uri>model://walk</uri>
+      <pose frame=''>20 -40 3.5 0 0 -1.5708</pose>
+    </include>
+
     <!--}-->
 
     <include>
