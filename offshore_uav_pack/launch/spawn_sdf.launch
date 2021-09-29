@@ -3,7 +3,7 @@
 <launch>
 
     <param name="simulation" command="$(find xacro)/xacro 
-    '$(find asv_wave_sim_gazebo)/models/wam-v_without_color_base/model.urdf.xacro'"/>
+    '$(find asv_wave_sim_gazebo)/models/wam-v/model.urdf.xacro'"/>
     <arg name="x" default="15.0" />
     <arg name="y" default="-40.0" />
     <arg name="z" default="1.0" />
